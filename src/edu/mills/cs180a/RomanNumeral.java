@@ -7,6 +7,7 @@ import java.util.Map;
  * {@link #MAX_VALUE}, inclusive.
  * 
  * @author Ellen Spertus
+ * @author Irene Serrano
  */
 public class RomanNumeral {
 	/**
