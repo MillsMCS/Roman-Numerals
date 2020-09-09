@@ -8,5 +8,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * visibility than otherwise needed to enhance testability.
  */
 @Retention(SOURCE)
-public @interface VisibleForTesting {}
+public @interface VisibleForTesting {
+	
+}
 
