@@ -7,6 +7,7 @@ import java.util.Map;
  * {@link #MAX_VALUE}, inclusive.
  *
  * @author Ellen Spertus
+ * @author Irene Serrano
  */
 public class RomanNumeral {
     /**
@@ -17,7 +18,7 @@ public class RomanNumeral {
     /**
      * The highest number that can be represented.
      */
-    public static final int MAX_VALUE = 9999;
+    public static final int MAX_VALUE = 10;
 
     @VisibleForTesting
     protected static final Map<Character, Integer> LETTERS_TO_VALUES = Map.of(
@@ -60,7 +61,7 @@ public class RomanNumeral {
      */
     public RomanNumeral(String text) {
    	 this.text = text;
-   	 value = convertFromString(text);
+   	 value = convertToInteger(text);
    	 if (value < MIN_VALUE || value > MAX_VALUE) {
    		 throw new IllegalArgumentException(
    				 "Value out of bounds [" + MIN_VALUE + "..." + MAX_VALUE + "]: " + value);
@@ -91,8 +92,21 @@ public class RomanNumeral {
      * Roman Numeral or if it is out of range
      */
     @VisibleForTesting
-    protected static int convertFromString(String s) {
-   	 return 0;
+    protected static int convertToInteger(String s) 
+    {
+   	 	//GOAL: convert string (Roman Numerals) into numeric value
+    	//NOTE: have a Map interface that has a list of defined keys and values
+    	//we should utilize this interface, while writing our method
+    	
+    	//acquire input, compare it to the keys in the map
+    	//return the numeric value
+    	if (LETTERS_TO_VALUES.containsKey(s))
+    	{
+    		return LETTERS_TO_VALUES.get(s);
+    	}
+    	
+    	//if the input does not match any of the keys in the map, return 0
+    	return 0;
     }
     
     /**
@@ -104,9 +118,20 @@ public class RomanNumeral {
      * by a Roman Numeral in the given range
      */
     @VisibleForTesting
-    protected static String convertToText(int n) {
-   	 return null;
+    protected static String convertToText(int n) 
+    {
+    	//GOAL: convert number into strings(Roman Numerals)
+    	//Refer to note in convertToInteger
+    	
+    	//acquire input, compare it to the values in the map
+    	//return the key
+    	if(n==MIN_VALUE)
+    	{
+    		System.out.println(LETTERS_TO_VALUES.get(0));
+    	}
+    	
+   	 	return null;
     }
-}
+}//end RomanNumeral class
 
 

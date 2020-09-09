@@ -21,9 +21,9 @@ class RomanNumeralTest {
 	@Test
 	void convertFromStringConvertsI() 
 	{
-		assertEquals(1, convertFromString("I"));
-		assertEquals(2, convertFromString("II"));
-		assertEquals(3, convertFromString("III"));
+		assertEquals(1, convertToInteger("I"));
+		assertEquals(2, convertToInteger("II"));
+		assertEquals(3, convertToInteger("III"));
 	}
 	
 	//this is a parameterized version of the first test, but a good thing to note is 
@@ -34,7 +34,7 @@ class RomanNumeralTest {
 	@CsvSource(value = {"I,1", "II,2", "III,3"})
 	void convertFromStringConvertsIs(String s, String exp)
 	{
-		assertEquals(Integer.parseInt(exp),convertFromString(s));
+		assertEquals(Integer.parseInt(exp),convertToInteger(s));
 	}
 	
 	//this test takes input that is not proper RN notation and throws an exception error
@@ -42,7 +42,7 @@ class RomanNumeralTest {
 	void convertFromStringThrowsExceptionForIllegalInput() 
 	{
 		assertThrows(IllegalArgumentException.class, 
-				() -> convertFromString("F"));
+				() -> convertToInteger("F"));
 	}
 	
 	//this test is a parameterized verison of the test above
@@ -51,7 +51,7 @@ class RomanNumeralTest {
 	void convertFromStringThrowsExceptionForIllegalInput2(String s) 
 	{
 		assertThrows(IllegalArgumentException.class, 
-				() -> convertFromString(s));
+				() -> convertToInteger(s));
 	}
 
 	
