@@ -106,14 +106,15 @@ public class RomanNumeral {
     	//keep track of the numeric value 
     	int total = 0;
     	//keep track of where you are in the array
-    	char current_letter, next_letter = 0;
+    	char current_letter, next_letter;
     	
     	//cycle through the array list
     	for (int i=0; i<letter.length; i++)
     	{
     		//set the iteration to the current letter
     		current_letter = letter[i];
-		
+    		next_letter = letter[i+1];
+    		
     		//check to see if the character does not exist in the map
 			//if that's the case then throw an error
     		if (LETTERS_TO_VALUES.get(current_letter)==null)
@@ -121,11 +122,13 @@ public class RomanNumeral {
     			throw new IllegalArgumentException(
    				 current_letter + "is not a valid roman numeral");
         	}//end if
+    		
+    		//Letters_to_value.get(s[i]).getValue()
 		
 			//compare the current letter to the next letter 
 			//if the current letter is smaller than the next letter, you subtract that value from the total
 			//if the current letter is larger than the next letter, you add that value to the total
-			if (current_letter < next_letter)
+			if (LETTERS_TO_VALUES.get(current_letter)< LETTERS_TO_VALUES.get(next_letter))
 				total -= LETTERS_TO_VALUES.get(current_letter);
 			else
 				total += LETTERS_TO_VALUES.get(current_letter);
