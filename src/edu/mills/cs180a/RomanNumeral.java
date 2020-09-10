@@ -127,8 +127,9 @@ public class RomanNumeral {
     	//return the key
     	if(n==MIN_VALUE)
     	{
-    		System.out.println(LETTERS_TO_VALUES.get(0));
+    		LETTERS_TO_VALUES.containsValue(n);
     	}
+    	else if (n==)
     	
    	 	return null;
     }
