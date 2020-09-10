@@ -98,16 +98,42 @@ public class RomanNumeral {
     	//NOTE: have a Map interface that has a list of defined keys and values
     	//we should utilize this interface, while writing our method
     	
-    	//acquire input, compare it to the keys in the map
-    	//return the numeric value
-    	if (LETTERS_TO_VALUES.containsKey(s))
-    	{
-    		return LETTERS_TO_VALUES.get(s);
-    	}
+    	//acquire input, compare it to the keys in the map, return the numeric value
     	
-    	//if the input does not match any of the keys in the map, return 0
-    	return 0;
-    }
+    	//take string and break it down to single characters and save them into an array
+    	char[] letter = s.toCharArray();
+
+    	//keep track of the numeric value 
+    	int total = 0;
+    	//keep track of where you are in the array
+    	char current_letter, next_letter = 0;
+    	
+    	//cycle through the array list
+    	for (int i=0; i<letter.length; i++)
+    	{
+    		//set the iteration to the current letter
+    		current_letter = letter[i];
+		
+    		//check to see if the character does not exist in the map
+			//if that's the case then throw an error
+    		if (LETTERS_TO_VALUES.get(current_letter)==null)
+        	{
+    			throw new IllegalArgumentException(
+   				 current_letter + "is not a valid roman numeral");
+        	}//end if
+		
+			//compare the current letter to the next letter 
+			//if the current letter is smaller than the next letter, you subtract that value from the total
+			//if the current letter is larger than the next letter, you add that value to the total
+			if (current_letter < next_letter)
+				total -= LETTERS_TO_VALUES.get(current_letter);
+			else
+				total += LETTERS_TO_VALUES.get(current_letter);
+		
+    	}//end for loop
+
+    	return total;
+    }//end convertToInteger
     
     /**
      * Returns the Roman Numeral representation of the given number.
@@ -129,9 +155,9 @@ public class RomanNumeral {
     	{
     		LETTERS_TO_VALUES.containsValue(n);
     	}
-    	else if (n==)
     	
-   	 	return null;
+    	
+ 	 	return null;
     }
 }//end RomanNumeral class
 
