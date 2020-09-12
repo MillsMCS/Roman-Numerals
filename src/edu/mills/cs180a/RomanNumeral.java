@@ -59,7 +59,7 @@ public class RomanNumeral {
    				 "Value out of bounds [" + MIN_VALUE + "..." + MAX_VALUE + "]: " + value);
    	 }
    	 this.value = value;
-   	 text = convertToText(value);
+   	 text = convertFromInt(value);
     }
 
     /**
@@ -72,7 +72,7 @@ public class RomanNumeral {
      */
     public RomanNumeral(String text) {
    	 this.text = text;
-   	 value = convertToInteger(text);
+   	 value = convertFromString(text);
    	 if (value < MIN_VALUE || value > MAX_VALUE) {
    		 throw new IllegalArgumentException(
    				 "Value out of bounds [" + MIN_VALUE + "..." + MAX_VALUE + "]: " + value);
@@ -103,7 +103,7 @@ public class RomanNumeral {
      * Roman Numeral or if it is out of range
      */
     @VisibleForTesting
-    protected static int convertToInteger(String s) 
+    protected static int convertFromString(String s) 
     {
    	 	//GOAL: convert string (Roman Numerals) into numeric value
     	//NOTE: have a Map interface that has a list of defined keys and values
@@ -120,16 +120,14 @@ public class RomanNumeral {
     	char current_letter, next_letter;
     	
     	//cycle through the array list
-    	for (int i=0; i<letter.length; i++)
-    	{
+    	for (int i = 0; i < letter.length; i++) {
     		//set the iteration to the current letter
     		current_letter = letter[i];
-    		next_letter = letter[i+1];
+    		next_letter = letter[i + 1];
     		
     		//check to see if the character does not exist in the map
 			//if that's the case then throw an error
-    		if (LETTERS_TO_VALUES.get(current_letter)==null)
-        	{
+    		if (LETTERS_TO_VALUES.get(current_letter)==null) {
     			throw new IllegalArgumentException(
    				 current_letter + "is not a valid roman numeral");
         	}//end if
@@ -139,10 +137,12 @@ public class RomanNumeral {
 			//compare the current letter to the next letter 
 			//if the current letter is smaller than the next letter, you subtract that value from the total
 			//if the current letter is larger than the next letter, you add that value to the total
-			if (LETTERS_TO_VALUES.get(current_letter)< LETTERS_TO_VALUES.get(next_letter))
+			if (LETTERS_TO_VALUES.get(current_letter)< LETTERS_TO_VALUES.get(next_letter)) {
 				total -= LETTERS_TO_VALUES.get(current_letter);
-			else
+			}
+			else {
 				total += LETTERS_TO_VALUES.get(current_letter);
+			}//end ifS
 		
     	}//end for loop
 
@@ -158,7 +158,7 @@ public class RomanNumeral {
      * by a Roman Numeral in the given range
      */
     @VisibleForTesting
-    protected static String convertToText(int n) 
+    protected static String convertFromInt(int n) 
     {
     	//GOAL: convert number into strings(Roman Numerals)
     	//Refer to note in convertToInteger
@@ -173,11 +173,8 @@ public class RomanNumeral {
     	StringBuilder final_numeral = new StringBuilder();
     	
     	//loop the application until the number reaches 0
-    	while(n > 0)
-    	{
-    		
-    		if (n <= 5)
-    		{
+    	while(n > 0) {
+    		if (n <= 5) {
     			//set the min and max to be 1 and 5
     			min = 1; max = 5;
     			//pass the value, and the constraints to createNotation, the store the string 
@@ -187,78 +184,81 @@ public class RomanNumeral {
     			//append the string to the string builder
     			final_numeral.append(RN_piece);
     		}
-    		else if (n <= 10)
-    		{
+    		else if (n <= 10) {
     			//set constraints
     			min = 5; max = 10;
     			//pass value/constraints to createNotation and store string
     			RN_piece = createNotation(n, min, max);
     			//alter number, bring it to 0
-    			n=0;
+    			n = 0;
     			//append the string
     			final_numeral.append(RN_piece);
     		}
-    		else if (n <= 50)
-    		{
+    		else if (n <= 50) {
     			//set constraints
     			min = 10; max = 50;
     			//round number down to nearest 10
     			//pass THIS value to createNotation
-    			n_rounded=n-(n/10);
+    			n_rounded = n - (n / 10);
     			//pass value/constraint to createNotation and store string
     			RN_piece = createNotation(n_rounded, min, max);
     			//alter number 
-    			n=n-n_rounded;
+    			n = n - n_rounded;
     			//append the string
     			final_numeral.append(RN_piece);
     		}
-    		else if (n <= 100)
-    		{
+    		else if (n <= 100) {
     			//set constraints
     			min = 50; max = 100;
     			//round number down to nearest 10
     			//pass THIS value to createNotation
-    			n_rounded=n-(n/10);
+    			n_rounded = n - (n / 10);
     			//pass value/constraint to createNotation and store string
     			RN_piece = createNotation(n_rounded, min, max);
     			//alter number, but using n_rounded 
-    			n=n-n_rounded;
+    			n = n - n_rounded;
     			//append the string
     			final_numeral.append(RN_piece);
     		}
-    		else if (n <= 500)
-    		{
+    		else if (n <= 500) {
     			//set constraints
     			min = 100; max = 500;
     			//round number down to nearest 10
     			//pass THIS value to createNotation
-    			n_rounded=n-(n/10);
+    			n_rounded = n - (n/10);
     			//pass value/constraint to createNotation and store string
     			RN_piece = createNotation(n_rounded, min, max);
     			//alter number
-    			n=n-n_rounded;
+    			n = n - n_rounded;
     			//append the string
     			final_numeral.append(RN_piece);
     		}
-    		else
-    		{
+    		else {
     			//set constraints
     			min = 500; max = 1000;
     			//round number down to nearest 10
     			//pass THIS value to createNotation
-    			n_rounded=n-(n/10);
+    			n_rounded = n - (n/10);
     			//pass value/constraint to createNotation and store string
     			RN_piece = createNotation(n_rounded, min, max);
     			//alter number
-    			n=n-n_rounded;
+    			n = n - n_rounded;
     			//append the string
     			final_numeral.append(RN_piece);
-    		}
+    		}//end if statment
     	}//end while
     	
  	 	return final_numeral.toString();
-    }
+    }//end convertToText
     
+    /**
+     * Returns a part of the Roman Numeral representation of the main number.
+     *
+     * @param num the part of number to convert
+     * @param min the minimum constraint value
+     * @param max the maximum constraint value
+     * @return the Roman Numeral representation
+     */
     //helper method for convertToText
     private static String createNotation(int num, int min, int max)
     {
@@ -266,31 +266,24 @@ public class RomanNumeral {
     	//but we will need to use StringBuilder
     	StringBuilder roman_numeral = new StringBuilder();
     	
-    	if(num == min)
-    	{
+    	if(num == min) {
     		roman_numeral.append(VALUES_TO_LETTERS.get(min));
     	}
-    	else if (num == min * 2)
-    	{
-    		for (int i=0; i<2; i++)
-    		{
+    	else if (num == min * 2) {
+    		for (int i = 0; i < 2; i++) {
     			roman_numeral.append(VALUES_TO_LETTERS.get(min));
     		}
     	}
-    	else if (num == min*3)
-    	{
-    		for (int i=0; i<3; i++)
-    		{
+    	else if (num == min*3) {
+    		for (int i = 0; i < 3; i++) {
     			roman_numeral.append(VALUES_TO_LETTERS.get(min));
     		}
     	}
-    	else if (num == max-1)
-    	{
+    	else if (num == max - 1) {
     		roman_numeral.append(VALUES_TO_LETTERS.get(1));
     		roman_numeral.append(VALUES_TO_LETTERS.get(max));
     	}
-    	else
-    	{
+    	else {
     		roman_numeral.append(VALUES_TO_LETTERS.get(max));
     	}
     	
