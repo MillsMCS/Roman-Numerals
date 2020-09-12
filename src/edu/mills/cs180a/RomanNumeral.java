@@ -18,7 +18,7 @@ public class RomanNumeral {
     /**
      * The highest number that can be represented.
      */
-    public static final int MAX_VALUE = 1000;
+    public static final int MAX_VALUE = 9999;
 
     @VisibleForTesting
     protected static final Map<Character, Integer> LETTERS_TO_VALUES = Map.of(
@@ -40,8 +40,7 @@ public class RomanNumeral {
     100,	'C',
     500,	'D',
     1000,	'M'
-    
-    		);
+    );
    		 
     private final int value;
     private String text;
@@ -183,8 +182,8 @@ public class RomanNumeral {
     			min = 1; max = 5;
     			//pass the value, and the constraints to createNotation, the store the string 
     			RN_piece = createNotation(n, min, max);
-    			//alter the number
-    			n = max-n;
+    			//alter the number, in this case bring it to 0
+    			n = 0;
     			//append the string to the string builder
     			final_numeral.append(RN_piece);
     		}
@@ -194,8 +193,8 @@ public class RomanNumeral {
     			min = 5; max = 10;
     			//pass value/constraints to createNotation and store string
     			RN_piece = createNotation(n, min, max);
-    			//alter number
-    			n=max-n;
+    			//alter number, bring it to 0
+    			n=0;
     			//append the string
     			final_numeral.append(RN_piece);
     		}
@@ -208,7 +207,7 @@ public class RomanNumeral {
     			n_rounded=n-(n/10);
     			//pass value/constraint to createNotation and store string
     			RN_piece = createNotation(n_rounded, min, max);
-    			//alter number, but using n_rounded 
+    			//alter number 
     			n=n-n_rounded;
     			//append the string
     			final_numeral.append(RN_piece);
