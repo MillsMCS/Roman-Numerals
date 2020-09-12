@@ -18,7 +18,7 @@ public class RomanNumeral {
     /**
      * The highest number that can be represented.
      */
-    public static final int MAX_VALUE = 10;
+    public static final int MAX_VALUE = 1000;
 
     @VisibleForTesting
     protected static final Map<Character, Integer> LETTERS_TO_VALUES = Map.of(
@@ -30,6 +30,18 @@ public class RomanNumeral {
    	 'D', 500,
    	 'M', 1000
     );
+    
+    @VisibleForTesting 
+    protected static final Map<Integer, Character> VALUES_TO_LETTERS = Map.of(
+    1,		'I',
+    5, 		'V',
+    10,		'X',
+    50, 	'L',
+    100,	'C',
+    500,	'D',
+    1000,	'M'
+    
+    		);
    		 
     private final int value;
     private String text;
@@ -154,14 +166,139 @@ public class RomanNumeral {
     	
     	//acquire input, compare it to the values in the map
     	//return the key
-    	if(n==MIN_VALUE)
+    	
+    	//create min and max variables to represent consecutive roman numeral values
+    	int min, max, n_rounded;
+    	//create string variable to hold the strings passed back from createNotation
+    	String RN_piece;
+    	StringBuilder final_numeral = new StringBuilder();
+    	
+    	//loop the application until the number reaches 0
+    	while(n > 0)
     	{
-    		LETTERS_TO_VALUES.containsValue(n);
+    		
+    		if (n <= 5)
+    		{
+    			//set the min and max to be 1 and 5
+    			min = 1; max = 5;
+    			//pass the value, and the constraints to createNotation, the store the string 
+    			RN_piece = createNotation(n, min, max);
+    			//alter the number
+    			n = max-n;
+    			//append the string to the string builder
+    			final_numeral.append(RN_piece);
+    		}
+    		else if (n <= 10)
+    		{
+    			//set constraints
+    			min = 5; max = 10;
+    			//pass value/constraints to createNotation and store string
+    			RN_piece = createNotation(n, min, max);
+    			//alter number
+    			n=max-n;
+    			//append the string
+    			final_numeral.append(RN_piece);
+    		}
+    		else if (n <= 50)
+    		{
+    			//set constraints
+    			min = 10; max = 50;
+    			//round number down to nearest 10
+    			//pass THIS value to createNotation
+    			n_rounded=n-(n/10);
+    			//pass value/constraint to createNotation and store string
+    			RN_piece = createNotation(n_rounded, min, max);
+    			//alter number, but using n_rounded 
+    			n=n-n_rounded;
+    			//append the string
+    			final_numeral.append(RN_piece);
+    		}
+    		else if (n <= 100)
+    		{
+    			//set constraints
+    			min = 50; max = 100;
+    			//round number down to nearest 10
+    			//pass THIS value to createNotation
+    			n_rounded=n-(n/10);
+    			//pass value/constraint to createNotation and store string
+    			RN_piece = createNotation(n_rounded, min, max);
+    			//alter number, but using n_rounded 
+    			n=n-n_rounded;
+    			//append the string
+    			final_numeral.append(RN_piece);
+    		}
+    		else if (n <= 500)
+    		{
+    			//set constraints
+    			min = 100; max = 500;
+    			//round number down to nearest 10
+    			//pass THIS value to createNotation
+    			n_rounded=n-(n/10);
+    			//pass value/constraint to createNotation and store string
+    			RN_piece = createNotation(n_rounded, min, max);
+    			//alter number
+    			n=n-n_rounded;
+    			//append the string
+    			final_numeral.append(RN_piece);
+    		}
+    		else
+    		{
+    			//set constraints
+    			min = 500; max = 1000;
+    			//round number down to nearest 10
+    			//pass THIS value to createNotation
+    			n_rounded=n-(n/10);
+    			//pass value/constraint to createNotation and store string
+    			RN_piece = createNotation(n_rounded, min, max);
+    			//alter number
+    			n=n-n_rounded;
+    			//append the string
+    			final_numeral.append(RN_piece);
+    		}
+    	}//end while
+    	
+ 	 	return final_numeral.toString();
+    }
+    
+    //helper method for convertToText
+    private static String createNotation(int num, int min, int max)
+    {
+    	//create variable to hold the string
+    	//but we will need to use StringBuilder
+    	StringBuilder roman_numeral = new StringBuilder();
+    	
+    	if(num == min)
+    	{
+    		roman_numeral.append(VALUES_TO_LETTERS.get(min));
+    	}
+    	else if (num == min * 2)
+    	{
+    		for (int i=0; i<2; i++)
+    		{
+    			roman_numeral.append(VALUES_TO_LETTERS.get(min));
+    		}
+    	}
+    	else if (num == min*3)
+    	{
+    		for (int i=0; i<3; i++)
+    		{
+    			roman_numeral.append(VALUES_TO_LETTERS.get(min));
+    		}
+    	}
+    	else if (num == max-1)
+    	{
+    		roman_numeral.append(VALUES_TO_LETTERS.get(1));
+    		roman_numeral.append(VALUES_TO_LETTERS.get(max));
+    	}
+    	else
+    	{
+    		roman_numeral.append(VALUES_TO_LETTERS.get(max));
     	}
     	
+    	return roman_numeral.toString();
     	
- 	 	return null;
-    }
+    }//end createNotation method
+    
 }//end RomanNumeral class
 
 
