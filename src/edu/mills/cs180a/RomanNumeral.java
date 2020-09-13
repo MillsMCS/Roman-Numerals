@@ -18,7 +18,7 @@ public class RomanNumeral {
   /**
    * The highest number that can be represented.
    */
-  public static final int MAX_VALUE = 9999;
+  public static final int MAX_VALUE = 1000;
 
   @VisibleForTesting
   protected static final Map<Character, Integer> LETTERS_TO_VALUES =
@@ -113,9 +113,7 @@ public class RomanNumeral {
         throw new IllegalArgumentException(current_letter + "is not a valid roman numeral");
       } // end if
 
-      // Letters_to_value.get(s[i]).getValue()
-
-      // compare the current letter to the next letter
+      // compare the value of the current letter to the value of the next letter
       // if the current letter is smaller than the next letter, you subtract that value from the
       // total
       // if the current letter is larger than the next letter, you add that value to the total
@@ -124,11 +122,10 @@ public class RomanNumeral {
       } else {
         total += LETTERS_TO_VALUES.get(current_letter);
       } // end ifS
-
     } // end for loop
 
     return total;
-  }// end convertToInteger
+  }// end convertFromString
 
   /**
    * Returns the Roman Numeral representation of the given number.
@@ -154,7 +151,7 @@ public class RomanNumeral {
 
     // loop the application until the number reaches 0
     while (n > 0) {
-      if (n <= 5) {
+      if (n < 6) {
         // set the min and max to be 1 and 5
         min = 1;
         max = 5;
@@ -164,7 +161,7 @@ public class RomanNumeral {
         n = 0;
         // append the string to the string builder
         final_numeral.append(RN_piece);
-      } else if (n <= 10) {
+      } else if (n < 11) {
         // set constraints
         min = 5;
         max = 10;
@@ -174,7 +171,7 @@ public class RomanNumeral {
         n = 0;
         // append the string
         final_numeral.append(RN_piece);
-      } else if (n <= 50) {
+      } else if (n < 51) {
         // set constraints
         min = 10;
         max = 50;
@@ -187,7 +184,7 @@ public class RomanNumeral {
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
-      } else if (n <= 100) {
+      } else if (n < 101) {
         // set constraints
         min = 50;
         max = 100;
@@ -200,7 +197,7 @@ public class RomanNumeral {
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
-      } else if (n <= 500) {
+      } else if (n < 501) {
         // set constraints
         min = 100;
         max = 500;
@@ -226,11 +223,11 @@ public class RomanNumeral {
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
-      } // end if statment
+      } // end if statement
     } // end while
 
     return final_numeral.toString();
-  }// end convertToText
+  }// end convertFromInt
 
   /**
    * Returns a part of the Roman Numeral representation of the main number.
@@ -240,23 +237,26 @@ public class RomanNumeral {
    * @param max the maximum constraint value
    * @return the Roman Numeral representation
    */
-  // helper method for convertToText
   private static String createNotation(int num, int min, int max) {
     // create variable to hold the string
     // but we will need to use StringBuilder
     StringBuilder roman_numeral = new StringBuilder();
 
     if (num == min) {
+      // this clause is mainly for numbers that are 1 in the ones place
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
     } else if (num == min * 2) {
+      // this clause is mainly for numbers that are 2 in the ones place
       for (int i = 0; i < 2; i++) {
         roman_numeral.append(VALUES_TO_LETTERS.get(min));
       }
     } else if (num == min * 3) {
+      // this clause is mainly for numbers that are 3 in the ones place
       for (int i = 0; i < 3; i++) {
         roman_numeral.append(VALUES_TO_LETTERS.get(min));
       }
     } else if (num == max - 1) {
+      // this clause if mainly for numbers that are 4 in the ones place
       roman_numeral.append(VALUES_TO_LETTERS.get(1));
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
     } else if (num == min + 10) {
@@ -277,10 +277,9 @@ public class RomanNumeral {
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
     } else {
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
-    }
+    } // end if statement
 
     return roman_numeral.toString();
-
   }// end createNotation method
 
 }// end RomanNumeral class
