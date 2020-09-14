@@ -18,15 +18,15 @@ public class RomanNumeral {
   /**
    * The highest number that can be represented.
    */
-  public static final int MAX_VALUE = 1000;
+  public static final int MAX_VALUE = 100;
 
   @VisibleForTesting
   protected static final Map<Character, Integer> LETTERS_TO_VALUES =
-      Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
+  Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
 
   @VisibleForTesting
   protected static final Map<Integer, Character> VALUES_TO_LETTERS =
-      Map.of(1, 'I', 5, 'V', 10, 'X', 50, 'L', 100, 'C', 500, 'D', 1000, 'M');
+  Map.of(1, 'I', 5, 'V', 10, 'X', 50, 'L', 100, 'C', 500, 'D', 1000, 'M');
 
   private final int value;
   private String text;
@@ -180,7 +180,7 @@ public class RomanNumeral {
         n_rounded = n - (n / 10);
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
-        // alter number
+        // alter number to remove the 10 from the number
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
@@ -193,7 +193,7 @@ public class RomanNumeral {
         n_rounded = n - (n / 10);
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
-        // alter number, but using n_rounded
+        // alter number to remove the 10 from the number
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
@@ -201,12 +201,12 @@ public class RomanNumeral {
         // set constraints
         min = 100;
         max = 500;
-        // round number down to nearest 10
+        // round number down to nearest 100
         // pass THIS value to createNotation
-        n_rounded = n - (n / 10);
+        n_rounded = (n/100)*100;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
-        // alter number
+        // alter number to remove the 100 from the number
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
@@ -214,12 +214,12 @@ public class RomanNumeral {
         // set constraints
         min = 500;
         max = 1000;
-        // round number down to nearest 10
+        // round number down to nearest 100
         // pass THIS value to createNotation
-        n_rounded = n - (n / 10);
+        n_rounded = (n/100)*100;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
-        // alter number
+        // alter number to remove the 100 from the number
         n = n - n_rounded;
         // append the string
         final_numeral.append(RN_piece);
@@ -243,40 +243,49 @@ public class RomanNumeral {
     StringBuilder roman_numeral = new StringBuilder();
 
     if (num == min) {
-      // this clause is mainly for numbers that are 1 in the ones place
+      // this clause is for all numbers that are the lower constraint
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
+    } else if (num == max) {
+      // this clause is for all numbers that are the upper constraints
+      roman_numeral.append(VALUES_TO_LETTERS.get(max));
     } else if (num == min * 2) {
-      // this clause is mainly for numbers that are 2 in the ones place
+      // this clause works for numbers in range of 1-5, 10-50, 100-500
       for (int i = 0; i < 2; i++) {
         roman_numeral.append(VALUES_TO_LETTERS.get(min));
       }
     } else if (num == min * 3) {
-      // this clause is mainly for numbers that are 3 in the ones place
+      // this clause works for numbers in range of 1-5, 10-50, 100-500
       for (int i = 0; i < 3; i++) {
         roman_numeral.append(VALUES_TO_LETTERS.get(min));
       }
-    } else if (num == max - 1) {
-      // this clause if mainly for numbers that are 4 in the ones place
-      roman_numeral.append(VALUES_TO_LETTERS.get(1));
+    } else if (num == max - min) {
+      // this clause works for numbers in range of 1-5, 10-50, 100-500
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
     } else if (num == min + 10) {
+      // this clause works for numbers in range of 50-100
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
       roman_numeral.append(VALUES_TO_LETTERS.get(10));
     } else if (num == min + 20) {
+      // this clause works for numbers in range of 50-100
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
       for (int i = 0; i < 2; i++) {
         roman_numeral.append(VALUES_TO_LETTERS.get(10));
       }
-    } else if (num == min + 30) {
+    } else if (num == min + 30 && num != 40) {
+      // this clause works for numbers in range of 50-100
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
       for (int i = 0; i < 3; i++) {
         roman_numeral.append(VALUES_TO_LETTERS.get(10));
       }
     } else if (num == max - 10) {
+      // this clause is mainly for numbers like 40 and 90
       roman_numeral.append(VALUES_TO_LETTERS.get(10));
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
-    } else {
-      roman_numeral.append(VALUES_TO_LETTERS.get(max));
+    } else if (num == max - 1) {
+      // this clause is mainly for numbers containing as a last digit 9
+      roman_numeral.append(VALUES_TO_LETTERS.get(1));
+      roman_numeral.append(VALUES_TO_LETTERS.get(10));
     } // end if statement
 
     return roman_numeral.toString();
