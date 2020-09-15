@@ -109,14 +109,14 @@ class RomanNumeralTest {
   @ParameterizedTest
   @CsvSource({"I,1", "II,2", "III,3", "IV,4", "V,5", "VI,6", "VII,7", "VIII,8", "IX,9", "X,10"})
   void convertFromInt_assertEquals_InttoString1through10(String RN, String num) {
-    assertEquals(RN, convertFromInt(Integer.parseInt(num)));
+    assertEquals(RN.toLowerCase(), convertFromInt(Integer.parseInt(num)));
   }
 
   // checking that convertFromInt correctly outputs markers
   @ParameterizedTest
   @CsvSource({"I,1", "V,5", "X,10", "L,50", "C,100", "D,500", "M,1000"})
   void convertFromInt_assertEquals_InttoStringMarkers(String RN, String num) {
-    assertEquals(RN, convertFromInt(Integer.parseInt(num)));
+    assertEquals(RN.toLowerCase(), convertFromInt(Integer.parseInt(num)));
   }
 
   // checking for all numbers comprised of 9s just up to 500
@@ -130,14 +130,14 @@ class RomanNumeralTest {
     "CDIX,409", "CDXIX,419", "CDXXIX,429", "CDXXXIX,439", "CDXLIX,449", "CDLIX,459", "CDLXIX,469",
     "CDLXXIX,479", "CDLXXXIX,489", "CDXCIX,499"})
   void convertFromInt_assertEquals_OneBeforeTens(String RN, String num) {
-    assertEquals(RN, convertFromInt(Integer.parseInt(num)));
+    assertEquals(RN.toLowerCase(), convertFromInt(Integer.parseInt(num)));
   }
 
   // checking against additives
   @ParameterizedTest
   @CsvSource({"IV,4", "IX,9", "XL,40", "XC,90", "CD,400", "CM,900"})
   void convertFromInt_assertEquals_StandardOverAdditive(String RN, String num) {
-    assertEquals(RN, convertFromInt(Integer.parseInt(num)));
+    assertEquals(RN.toLowerCase(), convertFromInt(Integer.parseInt(num)));
   }
 
   // checking in 10s
@@ -157,7 +157,7 @@ class RomanNumeralTest {
     "CM,900", "CMX,910", "CMXX,920", "CMXXX,930", "CMXL,940", "CML,950", "CMLX,960", "CMLXX,970",
     "CMLXXX,980", "CMXC,990", "M,1000"})
   void convertFromInt_assertEquals_Tens(String RN, String num) {
-    assertEquals(RN, convertFromInt(Integer.parseInt(num)));
+    assertEquals(RN.toLowerCase(), convertFromInt(Integer.parseInt(num)));
   }
 
   // checking random numbers
@@ -165,20 +165,21 @@ class RomanNumeralTest {
   @CsvSource({"CDXXIII,423", "CCCLXXIX,379", "CCXXXIV,234", "CDXXV,425", "CMLVI,956", "CCXLI,241",
     "CCCXCVIII,398", "DCCLXVI,766", "XXXVIII,38", "CLXXXVII,187", "XCIII,93", "II,2"})
   void convertFromInt_assertEquals_CorrectNotationForRandInts(String RN, String num) {
-    assertEquals(RN, convertFromInt(Integer.parseInt(num)));
+    assertEquals(RN.toLowerCase(), convertFromInt(Integer.parseInt(num)));
   }
 
   // checking that convertFromString correctly outputs numbers 1 through 10
   @ParameterizedTest
   @CsvSource({"1,I", "2,II", "3,III", "4,IV", "5,V", "6,VI", "7,VII", "8,VIII", "9,IX", "10,X"})
   void convertFromString_assertEquals_StringtoInt1through10(String num, String RN) {
-    assertEquals(Integer.parseInt(num), convertFromString(RN));
+    assertEquals(Integer.parseInt(num), convertFromString(RN.toLowerCase()));
   }
 
   // checking that convertFromString correctly outputs numbers 1 through 10
   @ParameterizedTest
-  @CsvSource({"11,XI", "12,XII", "13,XIII", "14,XIV", "15,XV", "16,XVI", "17,XVII", "18,XVIII", "19,XIX", "20,XX"})
+  @CsvSource({"11,XI", "12,XII", "13,XIII", "14,XIV", "15,XV", "16,XVI", "17,XVII", "18,XVIII",
+    "19,XIX", "20,XX"})
   void convertFromString_assertEquals_StringtoInt11through20(String num, String RN) {
-    assertEquals(Integer.parseInt(num), convertFromString(RN));
+    assertEquals(Integer.parseInt(num), convertFromString(RN.toLowerCase()));
   }
 }// end RomanNumeralTest class

@@ -18,15 +18,15 @@ public class RomanNumeral {
   /**
    * The highest number that can be represented.
    */
-  public static final int MAX_VALUE = 100;
+  public static final int MAX_VALUE = 1000;
 
   @VisibleForTesting
   protected static final Map<Character, Integer> LETTERS_TO_VALUES =
-  Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
+  Map.of('i', 1, 'v', 5, 'x', 10, 'l', 50, 'c', 100, 'd', 500, 'm', 1000);
 
   @VisibleForTesting
   protected static final Map<Integer, Character> VALUES_TO_LETTERS =
-  Map.of(1, 'I', 5, 'V', 10, 'X', 50, 'L', 100, 'C', 500, 'D', 1000, 'M');
+  Map.of(1, 'i', 5, 'v', 10, 'x', 50, 'l', 100, 'c', 500, 'd', 1000, 'm');
 
   private final int value;
   private String text;
@@ -94,7 +94,7 @@ public class RomanNumeral {
     System.out.println(s);
 
     // take string and break it down to single characters and save them into an array
-    char[] letters = s.toLowerCase().toCharArray();
+    char[] letters = s.toCharArray();
 
     // keep track of the numeric value, set the total to the very first character
     int total = LETTERS_TO_VALUES.get(letters[0]);
@@ -102,7 +102,7 @@ public class RomanNumeral {
     // keep track of where you are in the array
     char current_letter, previous_letter;
 
-    // if the RN is just one character, then just give the symbol
+    // if the RN is just one character, then just give the symbol value
     if (letters.length == 1)
     {
       total = LETTERS_TO_VALUES.get(letters[0]);
@@ -112,12 +112,12 @@ public class RomanNumeral {
     else {
       // cycle through the array list
       for (int i = 1; i < letters.length; i++) {
-        // set the iteration to the current letter
+        // set the iteration to the current letter and the previous iteration to the previous letter
         previous_letter = letters[i-1];
         current_letter = letters[i];
 
-        // compare the value of the current letter to the value of the next letter
-        // if current is smaller next, subtract current value from the next value
+        // compare the value of the current letter to the value of the previous letter
+        // if current is smaller next, subtract current value from the previous value
         // if current is larger next, add the two values
         // if current is equal next, add the two values
         // this if tree should work for values 1 through 10
