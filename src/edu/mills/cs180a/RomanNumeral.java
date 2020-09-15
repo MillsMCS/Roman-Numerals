@@ -109,7 +109,7 @@ public class RomanNumeral {
 
       // check to see if the character does not exist in the map
       // if that's the case then throw an error
-      if (LETTERS_TO_VALUES.get(current_letter) == null) {
+      if (!LETTERS_TO_VALUES.containsKey(current_letter)) {
         throw new IllegalArgumentException(current_letter + "is not a valid roman numeral");
       } // end if
 
@@ -177,7 +177,7 @@ public class RomanNumeral {
         max = 50;
         // round number down to nearest 10
         // pass THIS value to createNotation
-        n_rounded = n - (n / 10);
+        n_rounded = (n/10)*10;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
         // alter number to remove the 10 from the number
@@ -190,7 +190,7 @@ public class RomanNumeral {
         max = 100;
         // round number down to nearest 10
         // pass THIS value to createNotation
-        n_rounded = n - (n / 10);
+        n_rounded = (n/10)*10;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
         // alter number to remove the 10 from the number
@@ -262,6 +262,22 @@ public class RomanNumeral {
       // this clause works for numbers in range of 1-5, 10-50, 100-500
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
+    } else if (num == min + 1) {
+      // this clause works for numbers in range of 5-10
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
+      roman_numeral.append(VALUES_TO_LETTERS.get(1));
+    } else if (num == min + 2) {
+      // this clause works for numbers in range of 5-10
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
+      for (int i = 0; i < 2; i++) {
+        roman_numeral.append(VALUES_TO_LETTERS.get(1));
+      }
+    } else if (num == min + 3) {
+      // this clause works for numbers in range of 5-10
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
+      for (int i = 0; i < 3; i++) {
+        roman_numeral.append(VALUES_TO_LETTERS.get(1));
+      }
     } else if (num == min + 10) {
       // this clause works for numbers in range of 50-100
       roman_numeral.append(VALUES_TO_LETTERS.get(min));
@@ -281,6 +297,26 @@ public class RomanNumeral {
     } else if (num == max - 10) {
       // this clause is mainly for numbers like 40 and 90
       roman_numeral.append(VALUES_TO_LETTERS.get(10));
+      roman_numeral.append(VALUES_TO_LETTERS.get(max));
+    } else if (num == min + 100) {
+      // this clause works for numbers in range of 500-1000
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
+      roman_numeral.append(VALUES_TO_LETTERS.get(100));
+    } else if (num == min + 200) {
+      // this clause works for numbers in range of 50-1000
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
+      for (int i = 0; i < 2; i++) {
+        roman_numeral.append(VALUES_TO_LETTERS.get(100));
+      }
+    } else if (num == min + 300) {
+      // this clause works for numbers in range of 50-1000
+      roman_numeral.append(VALUES_TO_LETTERS.get(min));
+      for (int i = 0; i < 3; i++) {
+        roman_numeral.append(VALUES_TO_LETTERS.get(100));
+      }
+    } else if (num == max - 100) {
+      // this clause works for numbers in range of 50-1000
+      roman_numeral.append(VALUES_TO_LETTERS.get(100));
       roman_numeral.append(VALUES_TO_LETTERS.get(max));
     } else if (num == max - 1) {
       // this clause is mainly for numbers containing as a last digit 9
