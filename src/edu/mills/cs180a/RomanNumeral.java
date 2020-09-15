@@ -94,27 +94,27 @@ public class RomanNumeral {
     System.out.println(s);
 
     // take string and break it down to single characters and save them into an array
-    char[] letter = s.toCharArray();
+    char[] letters = s.toLowerCase().toCharArray();
 
     // keep track of the numeric value, set the total to the very first character
-    int total = LETTERS_TO_VALUES.get(letter[0]);
+    int total = LETTERS_TO_VALUES.get(letters[0]);
 
     // keep track of where you are in the array
     char current_letter, previous_letter;
 
     // if the RN is just one character, then just give the symbol
-    if (letter.length == 1)
+    if (letters.length == 1)
     {
-      total = LETTERS_TO_VALUES.get(letter[0]);
+      total = LETTERS_TO_VALUES.get(letters[0]);
       //for testing purposes
       System.out.println(total);
     }
     else {
       // cycle through the array list
-      for (int i = 1; i < letter.length; i++) {
+      for (int i = 1; i < letters.length; i++) {
         // set the iteration to the current letter
-        previous_letter = letter[i-1];
-        current_letter = letter[i];
+        previous_letter = letters[i-1];
+        current_letter = letters[i];
 
         // compare the value of the current letter to the value of the next letter
         // if current is smaller next, subtract current value from the next value
