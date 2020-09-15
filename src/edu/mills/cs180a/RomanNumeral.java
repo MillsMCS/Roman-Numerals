@@ -82,8 +82,6 @@ public class RomanNumeral {
    *
    * @param s the Roman Numeral
    * @return the corresponding number
-   * @throws IllegalArgumentException if the argument is not a valid Roman Numeral or if it is out
-   *         of range
    */
   @VisibleForTesting
   protected static int convertFromString(String s) {
@@ -92,37 +90,44 @@ public class RomanNumeral {
     // we should utilize this interface, while writing our method
 
     // acquire input, compare it to the keys in the map, return the numeric value
+    System.out.println(s);
 
     // take string and break it down to single characters and save them into an array
     char[] letter = s.toCharArray();
 
-    // keep track of the numeric value
+    // keep track of the numeric value, set the total to the very first character
     int total = 0;
     // keep track of where you are in the array
     char current_letter, next_letter;
 
-    // cycle through the array list
-    for (int i = 0; i < letter.length; i++) {
-      // set the iteration to the current letter
-      current_letter = letter[i];
-      next_letter = letter[i + 1];
+    // if the RN is just one character, then just give the symbol
+    if (letter.length == 1)
+    {
+      total = LETTERS_TO_VALUES.get(letter[0]);
+    }
+    else {
+      // cycle through the array list
+      for (int i = 0; i < letter.length; i++) {
+        // set the iteration to the current letter
+        current_letter = letter[i];
+        //        System.out.print(current_letter);
+        next_letter = letter[i + 1];
+        //        System.out.print(next_letter);
 
-      // check to see if the character does not exist in the map
-      // if that's the case then throw an error
-      if (!LETTERS_TO_VALUES.containsKey(current_letter)) {
-        throw new IllegalArgumentException(current_letter + "is not a valid roman numeral");
-      } // end if
-
-      // compare the value of the current letter to the value of the next letter
-      // if the current letter is smaller than the next letter, you subtract that value from the
-      // total
-      // if the current letter is larger than the next letter, you add that value to the total
-      if (LETTERS_TO_VALUES.get(current_letter) < LETTERS_TO_VALUES.get(next_letter)) {
-        total -= LETTERS_TO_VALUES.get(current_letter);
-      } else {
-        total += LETTERS_TO_VALUES.get(current_letter);
-      } // end ifS
-    } // end for loop
+        // compare the value of the current letter to the value of the next letter
+        // if current is smaller next, subtract current value from the next value
+        // if current is larger next, add the two values
+        // if current is equal next, add the two values
+        // this if tree should work for values 1 through 10
+        if (LETTERS_TO_VALUES.get(current_letter) == LETTERS_TO_VALUES.get(next_letter)) {
+          total = LETTERS_TO_VALUES.get(current_letter) + LETTERS_TO_VALUES.get(next_letter);
+        } else if (LETTERS_TO_VALUES.get(current_letter) > LETTERS_TO_VALUES.get(next_letter)) {
+          total = LETTERS_TO_VALUES.get(current_letter) + LETTERS_TO_VALUES.get(next_letter);
+        } else if (LETTERS_TO_VALUES.get(current_letter) < LETTERS_TO_VALUES.get(next_letter)) {
+          total = LETTERS_TO_VALUES.get(next_letter) - LETTERS_TO_VALUES.get(current_letter);
+        }//end if
+      } // end for loop
+    }//end if statement
 
     return total;
   }// end convertFromString

@@ -169,9 +169,9 @@ class RomanNumeralTest {
 
   // checking that convertFromString correctly outputs numbers 1 through 10
   @ParameterizedTest
-  @CsvSource({"I,1", "II,2", "III,3", "IV,4", "V,5", "VI,6", "VII,7", "VIII,8", "IX,9", "X,10"})
-  void convertFromString_assertEquals_StringtoInt1through10(String RN, String num)
+  @CsvSource({"1,I", "2,II", "3,III", "4,IV", "5,V", "6,VI", "7,VII", "8,VIII", "9,IX", "10,X"})
+  void convertFromString_assertEquals_StringtoInt1through10(String num, String RN)
   {
-    assertEquals(Integer.parseInt(num), convertFromString(RN));
+    assertEquals(Integer.parseInt(num),convertFromString(RN));
   }
 }// end RomanNumeralTest class
