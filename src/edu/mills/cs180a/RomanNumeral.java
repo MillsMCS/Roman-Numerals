@@ -90,7 +90,7 @@ public class RomanNumeral {
     // we should utilize this interface, while writing our method
 
     // acquire input, compare it to the keys in the map, return the numeric value
-    //for testing purposes
+    // for testing purposes
     System.out.println(s);
 
     // take string and break it down to single characters and save them into an array
@@ -102,19 +102,34 @@ public class RomanNumeral {
     // keep track of where you are in the array
     char current_letter, previous_letter;
 
+
     // if the RN is just one character, then just give the symbol value
-    if (letters.length == 1)
-    {
-      total = LETTERS_TO_VALUES.get(letters[0]);
-      //for testing purposes
+    if (letters.length == 1) {
+      // check to see if the character does not exist in the map
+      // if that's the case then throw an error
+      if (!LETTERS_TO_VALUES.containsKey(letters[0])) {
+        throw new IllegalArgumentException(letters[0] + "is not a valid roman numeral");
+      } else {
+        total = LETTERS_TO_VALUES.get(letters[0]);
+        // for testing purposes
+      } // end if tree
+
+      // for testing purposes
       System.out.println(total);
-    }
-    else {
+    } else {
       // cycle through the array list
       for (int i = 1; i < letters.length; i++) {
         // set the iteration to the current letter and the previous iteration to the previous letter
-        previous_letter = letters[i-1];
+        previous_letter = letters[i - 1];
         current_letter = letters[i];
+
+        // check to see if the character does not exist in the map
+        // if that's the case then throw an error
+        if (!LETTERS_TO_VALUES.containsKey(previous_letter)) {
+          throw new IllegalArgumentException(letters[0] + "is not a valid roman numeral");
+        } else if (!LETTERS_TO_VALUES.containsKey(current_letter)) {
+          throw new IllegalArgumentException(letters[0] + "is not a valid roman numeral");
+        }
 
         // compare the value of the current letter to the value of the previous letter
         // if current is smaller next, subtract current value from the previous value
@@ -127,12 +142,12 @@ public class RomanNumeral {
           total = total + LETTERS_TO_VALUES.get(current_letter);
         } else if (LETTERS_TO_VALUES.get(previous_letter) < LETTERS_TO_VALUES.get(current_letter)) {
           total = LETTERS_TO_VALUES.get(current_letter) - total;
-        }//end if
+        } // end if
 
-        //for testing purposes
+        // for testing purposes
         System.out.println(total);
       } // end for loop
-    }//end if statement
+    } // end if statement
 
     return total;
   }// end convertFromString
@@ -188,7 +203,7 @@ public class RomanNumeral {
         max = 50;
         // round number down to nearest 10
         // pass THIS value to createNotation
-        n_rounded = (n/10)*10;
+        n_rounded = (n / 10) * 10;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
         // alter number to remove the 10 from the number
@@ -201,7 +216,7 @@ public class RomanNumeral {
         max = 100;
         // round number down to nearest 10
         // pass THIS value to createNotation
-        n_rounded = (n/10)*10;
+        n_rounded = (n / 10) * 10;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
         // alter number to remove the 10 from the number
@@ -214,7 +229,7 @@ public class RomanNumeral {
         max = 500;
         // round number down to nearest 100
         // pass THIS value to createNotation
-        n_rounded = (n/100)*100;
+        n_rounded = (n / 100) * 100;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
         // alter number to remove the 100 from the number
@@ -227,7 +242,7 @@ public class RomanNumeral {
         max = 1000;
         // round number down to nearest 100
         // pass THIS value to createNotation
-        n_rounded = (n/100)*100;
+        n_rounded = (n / 100) * 100;
         // pass value/constraint to createNotation and store string
         RN_piece = createNotation(n_rounded, min, max);
         // alter number to remove the 100 from the number
