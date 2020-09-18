@@ -22,11 +22,11 @@ public class RomanNumeral {
 
   @VisibleForTesting
   protected static final Map<Character, Integer> LETTERS_TO_VALUES =
-  Map.of('i', 1, 'v', 5, 'x', 10, 'l', 50, 'c', 100, 'd', 500, 'm', 1000);
+  Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
 
   @VisibleForTesting
   protected static final Map<Integer, Character> VALUES_TO_LETTERS =
-  Map.of(1, 'i', 5, 'v', 10, 'x', 50, 'l', 100, 'c', 500, 'd', 1000, 'm');
+  Map.of(1, 'I', 5, 'V', 10, 'X', 50, 'L', 100, 'C', 500, 'D', 1000, 'M');
 
   private final int value;
   private String text;
@@ -94,7 +94,7 @@ public class RomanNumeral {
     System.out.println(s);
 
     // take string and break it down to single characters and save them into an array
-    char[] letters = s.toCharArray();
+    char[] letters = s.toUpperCase().toCharArray();
 
     // keep track of the numeric value, set the total to the very first character
     int total = LETTERS_TO_VALUES.get(letters[0]);
