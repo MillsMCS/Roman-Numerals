@@ -114,8 +114,8 @@ public class RomanNumeral {
             current = letters[i];
             next = letters[i + 1];
 
-            //once we reach the end of the array just return the end value
-            if ( i == letters.length - 1) {
+            // once we reach the end of the array, return the end value
+            if (i == letters.length - 1) {
                 return numericValue;
             }
 
@@ -133,57 +133,65 @@ public class RomanNumeral {
                 numericValue += LETTERS_TO_VALUES.get(next);
             }
 
+            // this course of action is a way to account for Roman Numerals that contain Subtractive
+            // forms of some numbers, ie CDXLIV (444; 40=XL and 4=IV) or DCLXXIX (679; 9=IX) etc
             if (LETTERS_TO_VALUES.get(current) < LETTERS_TO_VALUES.get(next)) {
                 numericValue += LETTERS_TO_VALUES.get(next) - (2 * LETTERS_TO_VALUES.get(current));
             }
-        } // end for loop
+        }
 
         return numericValue;
     }// end convertFromString
 
 
     /**
-     * Returns the Roman Numeral representation of the given number by determining which keys in
-     * VALUES_TO_LETTERS the number falls between, setting the lesser key as a lower bound. These
-     * variables and a declared StringBuilder are then passed to a helper method createNotation,
-     * which will append the appropriate Roman symbol to the StringBuilder and return the number, of
-     * which the value has decreased based on the numeric value of the appended symbol.
+     * Returns the Roman Numeral representation of any given number by first determining which keys
+     * in VALUES_TO_LETTERS the number falls between and setting the lesser key as a lowerBound. The
+     * number, lowerBound and a StringBuilder are passed to a helper method, which will append the
+     * appropriate Roman symbol to the StringBuilder and return the number, of which the value has
+     * decreased based on the numeric value of the appended symbol.
      *
      * @param n the number to convert
      * @return the Roman Numeral representation
      */
     @VisibleForTesting
     protected static String convertFromInt(int n) {
-        // numeric value of LETTERS_TO_VALUES key which is next to lower than the number
+        // the lower bound is essentially the largest Roman Numeral symbol that is meant to be
+        // appended first since the general format of Roman Numerals is largest values first
         int lowerBound = 0;
         StringBuilder RomanNumeral = new StringBuilder();
 
         while (n > 0) {
-            // determine the lower bound to be passed into createNotation
             for (int i = 1; i <= LETTERS_TO_VALUES.size(); i++) {
+                // once we reach the end of the array, just set the bound to the last value
+                if (i == LETTERS_TO_VALUES.size() - 1) {
+                    lowerBound = LETTERS_TO_VALUES.get(i);
+                }
+
                 if (LETTERS_TO_VALUES.get(i - 1) <= n && n < LETTERS_TO_VALUES.get(i)) {
                     lowerBound = LETTERS_TO_VALUES.get(i - 1);
-                } // end if
-            } // end for
+                }
+            }
 
-            // pass the number, the bound and StringBuilder to createNotation, which will update the
-            // value for n
+            // once the value n reaches 0, the Roman Numeral string is complete
             n = createNotation(n, lowerBound, RomanNumeral);
-        } // end while
+        }
 
         return RomanNumeral.toString();
 
     }// end convertFromInt
 
-    // the purpose of this helper method is to evaluate the number, append the largest appropriate
-    // Roman Numeral symbol to a StringBuilder, decrease the value of the number.
+    // the purpose of this helper method is to append the Roman Numeral symbol stored in lowerBound
+    // to the passed in StringBuilder. The number of times any symbol is appended to the String
+    // Builder depends on the quotient between number and lowerBound. The value of the number is
+    // then decreased by the value associated with the number of times the Roman Numeral is appended
+    // into the StringBuilder. Subtractive forms are accounted for by adding them to the
+    // VALUES_TO_LETTERS map interface.
     private static int createNotation(int number, int min, StringBuilder RN) {
-        // append the largest appropriate Roman Numeral symbol to the StringBuilder
         for (int i = 0; i < (number / min); i++) {
             RN.append(VALUES_TO_LETTERS.get(min));
         }
 
-        // reduce the number by the amount of the numeric value associated with the symbol
         return number % min;
 
     }// end createNotation method
