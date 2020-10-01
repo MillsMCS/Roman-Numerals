@@ -81,11 +81,11 @@ public class RomanNumeral {
 
     /**
      * Returns the numeric value of any given Roman Numeral by taking any String, breaking it down
-     * into an array of char and then setting an int variable numericValue to the numeric value of
-     * the first char in the array. The method then cycles through the array, comparing the current
-     * char to the next char, and determines whether to add the current char's numeric value to
-     * numericValue or to add the difference between the value of the next char and twice the value
-     * of the current char.
+     * into an array of char and then setting {@link #numericValue} to the numeric value of the
+     * first char in the array. The method then cycles through the array, comparing the current char
+     * to the next char, and determines whether to add the current char's numeric value to
+     * {@link #numericValue} or to add the difference between the value of the next char and twice
+     * the value of the current char.
      *
      * @param s the Roman Numeral
      * @return the numeric value of the Roman Numeral
@@ -146,10 +146,11 @@ public class RomanNumeral {
 
     /**
      * Returns the Roman Numeral representation of any given number by first determining which keys
-     * in VALUES_TO_LETTERS the number falls between and setting the lesser key as a lowerBound. The
-     * number, lowerBound and a StringBuilder are passed to a helper method, which will append the
-     * appropriate Roman symbol to the StringBuilder and return the number, of which the value has
-     * decreased based on the numeric value of the appended symbol.
+     * in {@link #VALUES_TO_LETTERS} the number falls between and setting the lesser key as a
+     * {@link #lowerBound}. The number, {@link #lowerBound} and a StringBuilder are passed to a
+     * helper method, which will append the appropriate Roman symbol to the StringBuilder and return
+     * the number, of which the value has decreased based on the numeric value of the appended
+     * symbol.
      *
      * @param n the number to convert
      * @return the Roman Numeral representation
