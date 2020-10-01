@@ -80,70 +80,65 @@ public class RomanNumeral {
     }
 
     /**
-     * Returns the number corresponding to the given string representing a Roman Numeral.
+     * Returns the numeric value of any given Roman Numeral by taking any String, breaking it down
+     * into an array of char and then setting an int variable numericValue to the numeric value of
+     * the first char in the array. The method then cycles through the array, comparing the current
+     * char to the next char, and determines whether to add the current char's numeric value to
+     * numericValue or to add the difference between the value of the next char and twice the value
+     * of the current char.
      *
      * @param s the Roman Numeral
-     * @return the corresponding number
+     * @return the numeric value of the Roman Numeral
+     * @throws IllegalArgumentException if the argument is out of bounds
      */
     @VisibleForTesting
     protected static int convertFromString(String s) {
-        // take string and break it down to single characters and save them into an array
+        // allow for Roman Numerals in lower case to be accepted
         char[] letters = s.toUpperCase().toCharArray();
-
-        // keep track of the numeric value, set the total to the very first character
-        int total = LETTERS_TO_VALUES.get(letters[0]);
-
-        // keep track of where you are in the array
-        char current_letter, previous_letter;
+        int numericValue = LETTERS_TO_VALUES.get(letters[0]);
+        char current;
+        char next;
 
 
-        // if the RN is just one character, then just give the symbol value
+        // if the string is just one character, then just give the symbol value
         if (letters.length == 1) {
-            // check to see if the character does not exist in the map
-            // if that's the case then throw an error
+            // throw an error if the char does not exist in the map
             if (!LETTERS_TO_VALUES.containsKey(letters[0])) {
                 throw new IllegalArgumentException(letters[0] + "is not a valid roman numeral");
-            } else {
-                total = LETTERS_TO_VALUES.get(letters[0]);
-            } // end if tree
+            }
 
-        } else {
-            // cycle through the array list
-            for (int i = 1; i < letters.length; i++) {
-                // set the iteration to the current letter and the previous iteration to the
-                // previous letter
-                previous_letter = letters[i - 1];
-                current_letter = letters[i];
+            numericValue = LETTERS_TO_VALUES.get(letters[0]);
+        }
 
-                // check to see if the character does not exist in the map
-                // if that's the case then throw an error
-                if (!LETTERS_TO_VALUES.containsKey(previous_letter)) {
-                    throw new IllegalArgumentException(
-                            letters[0] + " is not a valid roman numeral");
-                } else if (!LETTERS_TO_VALUES.containsKey(current_letter)) {
-                    throw new IllegalArgumentException(
-                            letters[0] + " is not a valid roman numeral");
-                }
+        for (int i = 0; i < letters.length; i++) {
+            current = letters[i];
+            next = letters[i + 1];
 
-                // compare the value of the current letter to the value of the previous letter
-                // if current is smaller next, subtract current value from the previous value
-                // if current is larger next, add the two values
-                // if current is equal next, add the two values
-                // this if tree should work for values 1 through 10
-                if (LETTERS_TO_VALUES.get(previous_letter) == LETTERS_TO_VALUES
-                        .get(current_letter)) {
-                    total = total + LETTERS_TO_VALUES.get(current_letter);
-                } else if (LETTERS_TO_VALUES.get(previous_letter) > LETTERS_TO_VALUES
-                        .get(current_letter)) {
-                    total = total + LETTERS_TO_VALUES.get(current_letter);
-                } else if (LETTERS_TO_VALUES.get(previous_letter) < LETTERS_TO_VALUES
-                        .get(current_letter)) {
-                    total = LETTERS_TO_VALUES.get(current_letter) - total;
-                } // end if
-            } // end for loop
-        } // end if statement
+            //once we reach the end of the array just return the end value
+            if ( i == letters.length - 1) {
+                return numericValue;
+            }
 
-        return total;
+            // throw an error if the chars in current or next do not exist in the map
+            if (!LETTERS_TO_VALUES.containsKey(current)) {
+                throw new IllegalArgumentException(letters[i] + " is not a valid roman numeral");
+            }
+
+            if (!LETTERS_TO_VALUES.containsKey(next)) {
+                throw new IllegalArgumentException(
+                        letters[i + 1] + " is not a valid roman numeral");
+            }
+
+            if (LETTERS_TO_VALUES.get(current) >= LETTERS_TO_VALUES.get(next)) {
+                numericValue += LETTERS_TO_VALUES.get(next);
+            }
+
+            if (LETTERS_TO_VALUES.get(current) < LETTERS_TO_VALUES.get(next)) {
+                numericValue += LETTERS_TO_VALUES.get(next) - (2 * LETTERS_TO_VALUES.get(current));
+            }
+        } // end for loop
+
+        return numericValue;
     }// end convertFromString
 
 
