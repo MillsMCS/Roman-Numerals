@@ -18,17 +18,24 @@ public class RomanNumeral {
     /**
      * The highest number that can be represented.
      */
-    public static final int MAX_VALUE = 9999;
+    public static final int MAX_VALUE = 10;
 
     @VisibleForTesting
-    protected static final Map<String, Integer> LETTERS_TO_VALUES =
-    Map.of("I", 1, "IV", 4, "V", 5, "IX", 9, "X", 10, "XL", 40, "L", 50, "XC", 90, "C", 100,
-            "CD", 400, "D", 500, "CM", 900, "M", 1000);
+    protected static final Map<String, Integer> LETTERS_TO_VALUES = Map.ofEntries(Map.entry("I", 1),
+            Map.entry("IV", 4), Map.entry("V", 5), Map.entry("IX", 9), Map.entry("X", 10),
+            Map.entry("XL", 40), Map.entry("L", 50), Map.entry("XC", 90), Map.entry("C", 100),
+            Map.entry("CD", 400), Map.entry("D", 500), Map.entry("CM", 900), Map.entry("M", 1000));
 
     @VisibleForTesting
-    protected static final Map<Integer, String> VALUES_TO_LETTERS =
-    Map.of(1, "I", 4, "IV", 5, "V", 9, "IX", 10, "X", 40, "XL", 50, "L", 90, "XC", 100, "C",
-            400, "CD", 500, "D", 900, "CM", 1000, "M");
+    protected static final Map<Integer, String> VALUES_TO_LETTERS = Map.ofEntries(Map.entry(1, "I"),
+            Map.entry(4, "IV"), Map.entry(5, "V"), Map.entry(9, "IX"), Map.entry(10, "X"),
+            Map.entry(40, "XL"), Map.entry(50, "L"), Map.entry(90, "XC"), Map.entry(100, "C"),
+            Map.entry(400, "CD"), Map.entry(500, "D"), Map.entry(900, "CM"), Map.entry(1000, "M"));
+
+    @VisibleForTesting
+    protected static final int[] numerics =
+    new int[] {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+
 
     private final int value;
     private String text;
@@ -157,25 +164,36 @@ public class RomanNumeral {
      */
     @VisibleForTesting
     protected static String convertFromInt(int n) {
+
+        //        for (Map.Entry<String,Integer> entry : LETTERS_TO_VALUES.entrySet()) {
+        //            System.out.println(entry.getKey()+":"+entry.getValue().toString());
+        //        }
         // the lower bound is essentially the largest Roman Numeral symbol that is meant to be
         // appended first since the general format of Roman Numerals is largest values first
-        int lowerBound = 0;
+        String lowerBound = "";
         StringBuilder RomanNumeral = new StringBuilder();
 
         while (n > 0) {
-            for (int i = 1; i <= LETTERS_TO_VALUES.size(); i++) {
+            for (int i = 0; i < numerics.length; i++) {
+
                 // once we reach the end of the array, just set the bound to the last value
-                if (i == LETTERS_TO_VALUES.size() - 1) {
-                    lowerBound = LETTERS_TO_VALUES.get(i);
+                if (i == (numerics.length - 1)) {
+                    lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
                 }
 
-                if (LETTERS_TO_VALUES.get(i - 1) <= n && n < LETTERS_TO_VALUES.get(i)) {
-                    lowerBound = LETTERS_TO_VALUES.get(i - 1);
+                if (numerics[i] <= n && n < numerics[i + 1]) {
+                    lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
+                    //                    System.out.println(numerics[i]);
+                    //                    System.out.println(lowerBound);
                 }
+
             }
-
+            //            System.out.println("Original number: " + n);
+            //            System.out.println("Passed RN symbol: " + lowerBound);
             // once the value n reaches 0, the Roman Numeral string is complete
             n = createNotation(n, lowerBound, RomanNumeral);
+            //            System.out.println("Modified number: " + n);
+            //            System.out.println("--------");
         }
 
         return RomanNumeral.toString();
@@ -188,12 +206,13 @@ public class RomanNumeral {
     // then decreased by the value associated with the number of times the Roman Numeral is appended
     // into the StringBuilder. Subtractive forms are accounted for by adding them to the
     // VALUES_TO_LETTERS map interface.
-    private static int createNotation(int number, int min, StringBuilder RN) {
-        for (int i = 0; i < (number / min); i++) {
-            RN.append(VALUES_TO_LETTERS.get(min));
+    private static int createNotation(int number, String min, StringBuilder RN) {
+
+        for (int i = 0; i < (number / LETTERS_TO_VALUES.get(min)); i++) {
+            RN.append(min);
         }
 
-        return number % min;
+        return number % LETTERS_TO_VALUES.get(min);
 
     }// end createNotation method
 
