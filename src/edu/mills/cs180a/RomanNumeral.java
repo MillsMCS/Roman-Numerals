@@ -18,7 +18,7 @@ public class RomanNumeral {
     /**
      * The highest number that can be represented.
      */
-    public static final int MAX_VALUE = 10;
+    public static final int MAX_VALUE = 1000;
 
     @VisibleForTesting
     protected static final Map<String, Integer> LETTERS_TO_VALUES = Map.ofEntries(Map.entry("I", 1),
@@ -102,51 +102,56 @@ public class RomanNumeral {
     protected static int convertFromString(String s) {
         // allow for Roman Numerals in lower case to be accepted
         char[] letters = s.toUpperCase().toCharArray();
-        int numericValue = LETTERS_TO_VALUES.get(letters[0]);
-        char current;
-        char next;
+        int numericValue = LETTERS_TO_VALUES.get(String.valueOf(letters[0]));
+        String current;
+        String next;
 
 
         // if the string is just one character, then just give the symbol value
         if (letters.length == 1) {
             // throw an error if the char does not exist in the map
-            if (!LETTERS_TO_VALUES.containsKey(letters[0])) {
-                throw new IllegalArgumentException(letters[0] + "is not a valid roman numeral");
+            if (!LETTERS_TO_VALUES.containsKey(String.valueOf(letters[0]))) {
+                throw new IllegalArgumentException(
+                        String.valueOf(letters[0]) + "is not a valid roman numeral");
             }
 
-            numericValue = LETTERS_TO_VALUES.get(letters[0]);
+            return numericValue;
         }
 
         for (int i = 0; i < letters.length; i++) {
-            current = letters[i];
-            next = letters[i + 1];
+            current = String.valueOf(letters[i]);
 
-            // once we reach the end of the array, return the end value
+            // once we reach the end of the array, return the value stored in numericValue
             if (i == letters.length - 1) {
                 return numericValue;
             }
 
             // throw an error if the chars in current or next do not exist in the map
             if (!LETTERS_TO_VALUES.containsKey(current)) {
-                throw new IllegalArgumentException(letters[i] + " is not a valid roman numeral");
+                throw new IllegalArgumentException(
+                        String.valueOf(letters[i]) + " is not a valid roman numeral");
             }
+
+            // assignment of next must occur later so that the if clause, which tests whether we've
+            // reached the end of the array of chars, can return numericValue and terminate the
+            // program
+            next = String.valueOf(letters[i + 1]);
 
             if (!LETTERS_TO_VALUES.containsKey(next)) {
                 throw new IllegalArgumentException(
-                        letters[i + 1] + " is not a valid roman numeral");
+                        String.valueOf(letters[i + 1]) + " is not a valid roman numeral");
             }
 
             if (LETTERS_TO_VALUES.get(current) >= LETTERS_TO_VALUES.get(next)) {
                 numericValue += LETTERS_TO_VALUES.get(next);
             }
 
-            // this course of action is a way to account for Roman Numerals that contain Subtractive
-            // forms of some numbers, ie CDXLIV (444; 40=XL and 4=IV) or DCLXXIX (679; 9=IX) etc
+            // this course of action is a way to account for Roman Numerals that contain
+            // Subtractive forms of some numbers, ie CDXLIV (444; 40=XL and 4=IV) or DCLXXIX (679; 9=IX) etc
             if (LETTERS_TO_VALUES.get(current) < LETTERS_TO_VALUES.get(next)) {
                 numericValue += LETTERS_TO_VALUES.get(next) - (2 * LETTERS_TO_VALUES.get(current));
             }
         }
-
         return numericValue;
     }// end convertFromString
 
@@ -164,10 +169,6 @@ public class RomanNumeral {
      */
     @VisibleForTesting
     protected static String convertFromInt(int n) {
-
-        //        for (Map.Entry<String,Integer> entry : LETTERS_TO_VALUES.entrySet()) {
-        //            System.out.println(entry.getKey()+":"+entry.getValue().toString());
-        //        }
         // the lower bound is essentially the largest Roman Numeral symbol that is meant to be
         // appended first since the general format of Roman Numerals is largest values first
         String lowerBound = "";
@@ -175,25 +176,16 @@ public class RomanNumeral {
 
         while (n > 0) {
             for (int i = 0; i < numerics.length; i++) {
-
                 // once we reach the end of the array, just set the bound to the last value
-                if (i == (numerics.length - 1)) {
+                if (i == (numerics.length - 1) && numerics[i] <= n) {
+                    lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
+                } else if (numerics[i] <= n && n < numerics[i + 1]) {
                     lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
                 }
-
-                if (numerics[i] <= n && n < numerics[i + 1]) {
-                    lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
-                    //                    System.out.println(numerics[i]);
-                    //                    System.out.println(lowerBound);
-                }
-
             }
-            //            System.out.println("Original number: " + n);
-            //            System.out.println("Passed RN symbol: " + lowerBound);
+
             // once the value n reaches 0, the Roman Numeral string is complete
             n = createNotation(n, lowerBound, RomanNumeral);
-            //            System.out.println("Modified number: " + n);
-            //            System.out.println("--------");
         }
 
         return RomanNumeral.toString();
@@ -207,6 +199,7 @@ public class RomanNumeral {
     // into the StringBuilder. Subtractive forms are accounted for by adding them to the
     // VALUES_TO_LETTERS map interface.
     private static int createNotation(int number, String min, StringBuilder RN) {
+
 
         for (int i = 0; i < (number / LETTERS_TO_VALUES.get(min)); i++) {
             RN.append(min);

@@ -15,14 +15,14 @@ class RomanNumeralTest {
     }
 
     // checking that convertFromInt correctly outputs markers
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"I,1", "V,5", "X,10", "L,50", "C,100", "D,500", "M,1000"})
     void convertFromInt_assertEquals_InttoStringMarkers(String RN, String num) {
         assertEquals(RN, convertFromInt(Integer.parseInt(num)));
     }
 
     // checking for all numbers comprised of 9s just up to 500
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"IX,9", "XIX,19", "XXIX,29", "XXXIX,39", "XLIX,49", "LIX,59", "LXIX,69", "LXXIX,79",
         "LXXXIX,89", "XCIX,99", "CIX,109", "CXIX,119", "CXXIX,129", "CXXXIX,139", "CXLIX,149",
         "CLIX,159", "CLXIX,169", "CLXXIX,179", "CLXXXIX,189", "CXCIX,199", "CCIX,209",
@@ -36,14 +36,14 @@ class RomanNumeralTest {
     }
 
     // checking against additives
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"IV,4", "IX,9", "XL,40", "XC,90", "CD,400", "CM,900"})
     void convertFromInt_assertEquals_StandardOverAdditive(String RN, String num) {
         assertEquals(RN, convertFromInt(Integer.parseInt(num)));
     }
 
     // checking in 10s
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"X,10", "XX,20", "XXX,30", "XL,40", "L,50", "LX,60", "LXX,70", "LXXX,80", "XC,90",
         "C,100", "CX,110", "CXX,120", "CXXX,130", "CXL,140", "CL,150", "CLX,160", "CLXX,170",
         "CLXXX,180", "CXC,190", "CC,200", "CCX,210", "CCXX,220", "CCXXX,230", "CCXL,240",
@@ -64,7 +64,7 @@ class RomanNumeralTest {
     }
 
     // checking random numbers
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"CDXXIII,423", "CCCLXXIX,379", "CCXXXIV,234", "CDXXV,425", "CMLVI,956", "CCXLI,241",
         "CCCXCVIII,398", "DCCLXVI,766", "XXXVIII,38", "CLXXXVII,187", "XCIII,93", "II,2"})
     void convertFromInt_assertEquals_CorrectNotationForRandInts(String RN, String num) {
@@ -72,14 +72,14 @@ class RomanNumeralTest {
     }
 
     // checking that convertFromString correctly outputs numbers 1 through 10
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"1,I", "2,II", "3,III", "4,IV", "5,V", "6,VI", "7,VII", "8,VIII", "9,IX", "10,X"})
     void convertFromString_assertEquals_StringtoInt1through10(String num, String RN) {
         assertEquals(Integer.parseInt(num), convertFromString(RN));
     }
 
     // checking that convertFromString correctly outputs numbers 1 through 10
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvSource({"11,XI", "12,XII", "13,XIII", "14,XIV", "15,XV", "16,XVI", "17,XVII", "18,XVIII",
         "19,XIX", "20,XX"})
     void convertFromString_assertEquals_StringtoInt11through20(String num, String RN) {
