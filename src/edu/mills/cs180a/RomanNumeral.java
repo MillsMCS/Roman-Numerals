@@ -147,7 +147,8 @@ public class RomanNumeral {
             }
 
             // this course of action is a way to account for Roman Numerals that contain
-            // Subtractive forms of some numbers, ie CDXLIV (444; 40=XL and 4=IV) or DCLXXIX (679; 9=IX) etc
+            // Subtractive forms of some numbers, ie CDXLIV (444; 40=XL and 4=IV) or DCLXXIX (679;
+            // 9=IX) etc
             if (LETTERS_TO_VALUES.get(current) < LETTERS_TO_VALUES.get(next)) {
                 numericValue += LETTERS_TO_VALUES.get(next) - (2 * LETTERS_TO_VALUES.get(current));
             }
