@@ -100,13 +100,13 @@ public class RomanNumeral {
      */
     @VisibleForTesting
     protected static int convertFromString(String s) {
-        // allow for Roman Numerals in lower case to be accepted
+        // allow for lower case Roman Numerals to be accepted
         char[] letters = s.toUpperCase().toCharArray();
+
         // throw an error if any of the chars do not exist in the map
         for (int i = 0; i < letters.length; i++) {
             if (!LETTERS_TO_VALUES.containsKey(String.valueOf(letters[i]))) {
-                throw new IllegalArgumentException(
-                        String.valueOf(letters[i]) + "is not a valid roman numeral");
+                throw new IllegalArgumentException(letters[i] + "is not a valid roman numeral");
             }
         }
 
@@ -115,20 +115,17 @@ public class RomanNumeral {
         String next;
 
 
-        // if the string is just one character, then just give the symbol value
-        if (letters.length == 1) {
-            return numericValue;
-        }
-
         for (int i = 0; i < letters.length; i++) {
             current = String.valueOf(letters[i]);
 
-            // once we reach the end of the array, return the value stored in numericValue
+            // once we reach the end of the array, or if the array is just one character, return the
+            // value stored in numericValue
             if (i == letters.length - 1) {
                 return numericValue;
             }
-            // assignment of next must occur later so that the if clause, which tests whether we've
-            // reached the end of the array of chars, can return numericValue and terminate the
+
+            // assignment of next must occur later so that the if which tests whether we've
+            // reached the end of the array of chars can return numericValue and terminate the
             // program
             next = String.valueOf(letters[i + 1]);
 
@@ -165,7 +162,7 @@ public class RomanNumeral {
         String lowerBound = "";
         StringBuilder RomanNumeral = new StringBuilder();
 
-        // if n is out of bounds, min or max, throw an error
+        // if n is out of bounds, throw an error
         if (n > MAX_VALUE || n < MIN_VALUE) {
             throw new IllegalArgumentException(n + "is out of bounds");
         }

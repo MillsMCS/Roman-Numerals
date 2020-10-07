@@ -11,14 +11,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 class RomanNumeralTest {
     // test takes input that is not proper RN notation and throws an exception error
     @ParameterizedTest
-    @ValueSource(strings = {"wow", "IIII", "VIIII", "LXXXX"})
-    void convertFromString_ThrowIllegalArgumentExeption_InvalidRomanNumerals(String s) {
+    @ValueSource(strings = {"wL", "IIO", "iio", "xb","XB","DLR"})
+    void convertFromString_ThrowIllegalArgumentExeption_InvalidInput(String s) {
         assertThrows(IllegalArgumentException.class, () -> convertFromString(s));
     }
 
     // checking against integers that are outside of MIN/MAX_VALUE
     @ParameterizedTest
-    @ValueSource(ints = {-1, -2, -3, -10, 1001, 2000})
+    @ValueSource(ints = {-1, 0, 1001})
     void convertFromInt_ThrowIllegalArgumentException_OutOfBounds(int n) {
         assertThrows(IllegalArgumentException.class, () -> convertFromInt(n));
     }
