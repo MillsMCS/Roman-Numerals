@@ -6,19 +6,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class RomanNumeralTest {
-    //    // test takes input that is not proper RN notation and throws an exception error
-    //    @ParameterizedTest
-    //    @CsvSource({"i","iv","v","ix","x","xl","l","xc","c","cd","d","cm","m"})
-    //    void convertFromString_ThrowIllegalArgumentExeption_InvalidRomanNumerals(String s) {
-    //        assertThrows(IllegalArgumentException.class, () -> convertFromString(s));
-    //    }
-
-    // checking against invalid input such as 0 and negatives
+    // test takes input that is not proper RN notation and throws an exception error
     @ParameterizedTest
-    @CsvSource({"-1,I", "-2,II", "-3,III", "-10,X", "-22,XXII"})
-    void convertFromInt_ThrowIllegalArgumentException_InvalidInput(int n, String RN) {
+    @ValueSource(strings = {"wow", "IIII", "VIIII", "LXXXX"})
+    void convertFromString_ThrowIllegalArgumentExeption_InvalidRomanNumerals(String s) {
+        assertThrows(IllegalArgumentException.class, () -> convertFromString(s));
+    }
+
+    // checking against integers that are outside of MIN/MAX_VALUE
+    @ParameterizedTest
+    @ValueSource(ints = {-1, -2, -3, -10, 1001, 2000})
+    void convertFromInt_ThrowIllegalArgumentException_OutOfBounds(int n) {
         assertThrows(IllegalArgumentException.class, () -> convertFromInt(n));
     }
 

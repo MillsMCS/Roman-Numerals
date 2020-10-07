@@ -102,6 +102,14 @@ public class RomanNumeral {
     protected static int convertFromString(String s) {
         // allow for Roman Numerals in lower case to be accepted
         char[] letters = s.toUpperCase().toCharArray();
+        // throw an error if any of the chars do not exist in the map
+        for (int i = 0; i < letters.length; i++) {
+            if (!LETTERS_TO_VALUES.containsKey(String.valueOf(letters[i]))) {
+                throw new IllegalArgumentException(
+                        String.valueOf(letters[i]) + "is not a valid roman numeral");
+            }
+        }
+
         int numericValue = LETTERS_TO_VALUES.get(String.valueOf(letters[0]));
         String current;
         String next;
@@ -109,12 +117,6 @@ public class RomanNumeral {
 
         // if the string is just one character, then just give the symbol value
         if (letters.length == 1) {
-            // throw an error if the char does not exist in the map
-            if (!LETTERS_TO_VALUES.containsKey(String.valueOf(letters[0]))) {
-                throw new IllegalArgumentException(
-                        String.valueOf(letters[0]) + "is not a valid roman numeral");
-            }
-
             return numericValue;
         }
 
@@ -125,22 +127,10 @@ public class RomanNumeral {
             if (i == letters.length - 1) {
                 return numericValue;
             }
-
-            // throw an error if the chars in current or next do not exist in the map
-            if (!LETTERS_TO_VALUES.containsKey(current)) {
-                throw new IllegalArgumentException(
-                        String.valueOf(letters[i]) + " is not a valid roman numeral");
-            }
-
             // assignment of next must occur later so that the if clause, which tests whether we've
             // reached the end of the array of chars, can return numericValue and terminate the
             // program
             next = String.valueOf(letters[i + 1]);
-
-            if (!LETTERS_TO_VALUES.containsKey(next)) {
-                throw new IllegalArgumentException(
-                        String.valueOf(letters[i + 1]) + " is not a valid roman numeral");
-            }
 
             if (LETTERS_TO_VALUES.get(current) >= LETTERS_TO_VALUES.get(next)) {
                 numericValue += LETTERS_TO_VALUES.get(next);
@@ -174,6 +164,11 @@ public class RomanNumeral {
         // appended first since the general format of Roman Numerals is largest values first
         String lowerBound = "";
         StringBuilder RomanNumeral = new StringBuilder();
+
+        // if n is out of bounds, min or max, throw an error
+        if (n > MAX_VALUE || n < MIN_VALUE) {
+            throw new IllegalArgumentException(n + "is out of bounds");
+        }
 
         while (n > 0) {
             for (int i = 0; i < numerics.length; i++) {
