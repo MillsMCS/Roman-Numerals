@@ -18,7 +18,7 @@ public class RomanNumeral {
     /**
      * The highest number that can be represented.
      */
-    public static final int MAX_VALUE = 1000;
+    public static final int MAX_VALUE = 9999;
 
     @VisibleForTesting
     protected static final Map<String, Integer> LETTERS_TO_VALUES = Map.ofEntries(Map.entry("I", 1),
