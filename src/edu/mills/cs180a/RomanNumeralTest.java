@@ -4,6 +4,7 @@ import static edu.mills.cs180a.RomanNumeral.convertFromInt;
 import static edu.mills.cs180a.RomanNumeral.convertFromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -165,5 +166,10 @@ class RomanNumeralTest {
         "MMMMMMMMMXCIX,9099", "MMMMMMMMLXIII,8063", "MMMMMMMCDLVI,7456","MMLXXXII,2082"})
     void convertFromString_assertEquals_CorrectNotationForRandInts(String RN, int num) {
         assertEquals(num, convertFromString(RN));
+    }
+
+    @Test
+    void convertFromString_ThrowIllegalArgumentException_EmptyString() {
+        assertThrows(IllegalArgumentException.class, () -> convertFromString(""));
     }
 }// end RomanNumeralTest class

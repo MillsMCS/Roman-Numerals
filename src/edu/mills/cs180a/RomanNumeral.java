@@ -32,9 +32,8 @@ public class RomanNumeral {
             Map.entry(40, "XL"), Map.entry(50, "L"), Map.entry(90, "XC"), Map.entry(100, "C"),
             Map.entry(400, "CD"), Map.entry(500, "D"), Map.entry(900, "CM"), Map.entry(1000, "M"));
 
-    @VisibleForTesting
-    protected static final int[] numerics =
-    new int[] {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+    private static final int[] NUMERICS =
+            new int[] {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
 
 
     private final int value;
@@ -87,16 +86,11 @@ public class RomanNumeral {
     }
 
     /**
-     * Returns the numeric value of any given Roman Numeral by taking any String, breaking it down
-     * into an array of char and then setting {@link #numericValue} to the numeric value of the
-     * first char in the array. The method then cycles through the array, comparing the current char
-     * to the next char, and determines whether to add the current char's numeric value to
-     * {@link #numericValue} or to add the difference between the value of the next char and twice
-     * the value of the current char.
+     * Returns the number corresponding to the given string representing a Roman Numeral.
      *
      * @param s the Roman Numeral
      * @return the numeric value of the Roman Numeral
-     * @throws IllegalArgumentException if the argument is out of bounds
+     * @throws IllegalArgumentException if the argument does not exist in Map
      */
     @VisibleForTesting
     protected static int convertFromString(String s) {
@@ -111,32 +105,20 @@ public class RomanNumeral {
         }
 
         int numericValue = LETTERS_TO_VALUES.get(String.valueOf(letters[0]));
-        String current;
-        String next;
 
-
-        for (int i = 0; i < letters.length; i++) {
-            current = String.valueOf(letters[i]);
-
-            // once we reach the end of the array, or if the array is just one character, return the
-            // value stored in numericValue
-            if (i == letters.length - 1) {
-                return numericValue;
-            }
-
-            // assignment of next must occur later so that the if which tests whether we've
-            // reached the end of the array of chars can return numericValue and terminate the
-            // program
-            next = String.valueOf(letters[i + 1]);
+        // set the limit to one before the full length of the char array so that we don't run into
+        // any issues with variable next
+        for (int i = 0; i < letters.length - 1; i++) {
+            String current = String.valueOf(letters[i]);
+            String next = String.valueOf(letters[i + 1]);
 
             if (LETTERS_TO_VALUES.get(current) >= LETTERS_TO_VALUES.get(next)) {
                 numericValue += LETTERS_TO_VALUES.get(next);
-            }
-
-            // this course of action is a way to account for Roman Numerals that contain
-            // Subtractive forms of some numbers, ie CDXLIV (444; 40=XL and 4=IV) or DCLXXIX (679;
-            // 9=IX) etc
-            if (LETTERS_TO_VALUES.get(current) < LETTERS_TO_VALUES.get(next)) {
+            } else {
+                // Check if current starts a subtractive form (e.g., IX), where the second symbol
+                // has a higher value than the first. Subtract current twice: once because it is the
+                // start of a subtractive form and once because it was added in a previous
+                // iteration.
                 numericValue += LETTERS_TO_VALUES.get(next) - (2 * LETTERS_TO_VALUES.get(current));
             }
         }
@@ -154,52 +136,51 @@ public class RomanNumeral {
      *
      * @param n the number to convert
      * @return the Roman Numeral representation
+     * @throws IllegalArgumentException if the argument is out of bounds
      */
     @VisibleForTesting
     protected static String convertFromInt(int n) {
-        // the lower bound is essentially the largest Roman Numeral symbol that is meant to be
-        // appended first since the general format of Roman Numerals is largest values first
+        // lowerBound should be set to the Roman Numeral that closely matches the outermost place
+        // value of any given number. Ex n = 56, lowerBound = L; n = 383, lowerBound = C
         String lowerBound = "";
-        StringBuilder RomanNumeral = new StringBuilder();
+        StringBuilder romanNumeral = new StringBuilder();
 
-        // if n is out of bounds, throw an error
         if (n > MAX_VALUE || n < MIN_VALUE) {
             throw new IllegalArgumentException(n + "is out of bounds");
         }
 
+        // once the value of n reaches 0, the Roman Numeral string is complete
         while (n > 0) {
-            for (int i = 0; i < numerics.length; i++) {
-                // once we reach the end of the array, just set the bound to the last value
-                if (i == (numerics.length - 1) && numerics[i] <= n) {
-                    lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
-                } else if (numerics[i] <= n && n < numerics[i + 1]) {
-                    lowerBound = VALUES_TO_LETTERS.get(numerics[i]);
+            for (int i = 0; i < NUMERICS.length; i++) {
+                // if the numeric value of the integer is 1000 or greater, which will cause the loop
+                // to reach the end of NUMERICS, set lowerBound to M.
+                if (i == (NUMERICS.length - 1) && NUMERICS[i] <= n) {
+                    lowerBound = VALUES_TO_LETTERS.get(NUMERICS[i]);
+                } else if (NUMERICS[i] <= n && n < NUMERICS[i + 1]) {
+                    lowerBound = VALUES_TO_LETTERS.get(NUMERICS[i]);
+                    // break out of the loop as soon as lowerBound is determined
+                    break;
                 }
             }
 
-            // once the value n reaches 0, the Roman Numeral string is complete
-            n = createNotation(n, lowerBound, RomanNumeral);
+            appendNTimes(romanNumeral, n, lowerBound);
+
+            // Decrease the value of n by determining the remainder value of n divided by the
+            // numeric value of the symbol stored in lowerBound.
+            n = n % LETTERS_TO_VALUES.get(lowerBound);
         }
 
-        return RomanNumeral.toString();
+        return romanNumeral.toString();
 
     }// end convertFromInt
 
-    // the purpose of this helper method is to append the Roman Numeral symbol stored in lowerBound
-    // to the passed in StringBuilder. The number of times any symbol is appended to the String
-    // Builder depends on the quotient between number and lowerBound. The value of the number is
-    // then decreased by the value associated with the number of times the Roman Numeral is appended
-    // into the StringBuilder. Subtractive forms are accounted for by adding them to the
-    // VALUES_TO_LETTERS map interface.
-    private static int createNotation(int number, String min, StringBuilder RN) {
-
-
-        for (int i = 0; i < (number / LETTERS_TO_VALUES.get(min)); i++) {
-            RN.append(min);
+    // the purpose of this helper method is to append the Roman Numeral symbol to a StringBuilder.
+    // The number of times any symbol is appended to the String Builder depends on the quotient
+    // between n and the numeric value of symbol.
+    private static void appendNTimes(StringBuilder RN, int n, String symbol) {
+        for (int i = 0; i < (n / LETTERS_TO_VALUES.get(symbol)); i++) {
+            RN.append(symbol);
         }
-
-        return number % LETTERS_TO_VALUES.get(min);
-
     }// end createNotation method
 
 }// end RomanNumeral class
