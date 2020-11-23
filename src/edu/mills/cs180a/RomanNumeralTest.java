@@ -4,7 +4,7 @@ import static edu.mills.cs180a.RomanNumeral.convertFromInt;
 import static edu.mills.cs180a.RomanNumeral.convertFromString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -27,14 +27,14 @@ class RomanNumeralTest {
     // checking that convertFromInt correctly outputs numbers 1 through 10
     @ParameterizedTest
     @CsvSource({"I,1", "II,2", "III,3", "IV,4", "V,5", "VI,6", "VII,7", "VIII,8", "IX,9", "X,10"})
-    void convertFromInt_assertEquals_InttoString1through10(String RN, int num) {
+    void convertFromInt_CorrectString_LowerValues(String RN, int num) {
         assertEquals(RN, convertFromInt(num));
     }
 
     // checking that convertFromInt correctly outputs markers
     @ParameterizedTest
     @CsvSource({"I,1", "V,5", "X,10", "L,50", "C,100", "D,500", "M,1000"})
-    void convertFromInt_assertEquals_InttoStringMarkers(String RN, int num) {
+    void convertFromInt_CorrectString_MajorSymbols(String RN, int num) {
         assertEquals(RN, convertFromInt(num));
     }
 
@@ -55,7 +55,7 @@ class RomanNumeralTest {
     // checking against additives
     @ParameterizedTest
     @CsvSource({"IV,4", "IX,9", "XL,40", "XC,90", "CD,400", "CM,900"})
-    void convertFromInt_assertEquals_StandardOverAdditive(String RN, int num) {
+    void convertFromInt_CorrectString_StandardOverAdditive(String RN, int num) {
         assertEquals(RN, convertFromInt(num));
     }
 
@@ -93,7 +93,7 @@ class RomanNumeralTest {
         "MMMMMMMMLXXX,8080", "MMMMMMMMXC,8090", "MMMMMMMMM,9000", "MMMMMMMMMX,9010",
         "MMMMMMMMMXX,9020", "MMMMMMMMMXXX,9030", "MMMMMMMMMXL,9040", "MMMMMMMMML,9050",
         "MMMMMMMMMLX,9060", "MMMMMMMMMLXX,9070", "MMMMMMMMMLXXX,9080", "MMMMMMMMMXC,9090"})
-    void convertFromInt_assertEquals_Tens(String RN, int num) {
+    void convertFromInt_CorrectString_Tens(String RN, int num) {
         assertEquals(RN, convertFromInt(num));
     }
 
@@ -101,23 +101,17 @@ class RomanNumeralTest {
     @ParameterizedTest
     @CsvSource({"CDXXIII,423", "CCCLXXIX,379", "CCXXXIV,234", "CDXXV,425", "CMLVI,956", "CCXLI,241",
         "CCCXCVIII,398", "DCCLXVI,766", "XXXVIII,38", "CLXXXVII,187", "XCIII,93", "II,2",
-        "MMMMMMMMMXCIX,9099", "MMMMMMMMLXIII,8063", "MMMMMMMCDLVI,7456","MMLXXXII,2082"})
-    void convertFromInt_assertEquals_CorrectNotationForRandInts(String RN, int num) {
+        "MMMMMMMMMXCIX,9099", "MMMMMMMMLXIII,8063", "MMMMMMMCDLVI,7456", "MMLXXXII,2082"})
+    void convertFromInt_CorrectString_RandomInts(String RN, int num) {
         assertEquals(RN, convertFromInt(num));
     }
 
     // checking that convertFromString correctly outputs numbers 1 through 10
     @ParameterizedTest
-    @CsvSource({"1,I", "2,II", "3,III", "4,IV", "5,V", "6,VI", "7,VII", "8,VIII", "9,IX", "10,X"})
-    void convertFromString_assertEquals_StringtoInt1through10(int num, String RN) {
-        assertEquals(num, convertFromString(RN));
-    }
-
-    // checking that convertFromString correctly outputs numbers 1 through 10
-    @ParameterizedTest
-    @CsvSource({"11,XI", "12,XII", "13,XIII", "14,XIV", "15,XV", "16,XVI", "17,XVII", "18,XVIII",
+    @CsvSource({"1,I", "2,II", "3,III", "4,IV", "5,V", "6,VI", "7,VII", "8,VIII", "9,IX", "10,X",
+        "11,XI", "12,XII", "13,XIII", "14,XIV", "15,XV", "16,XVI", "17,XVII", "18,XVIII",
         "19,XIX", "20,XX"})
-    void convertFromString_assertEquals_StringtoInt11through20(int num, String RN) {
+    void convertFromString_CorrectNumericValue_LowerValue(int num, String RN) {
         assertEquals(num, convertFromString(RN));
     }
 
@@ -155,7 +149,7 @@ class RomanNumeralTest {
         "MMMMMMMMLXXX,8080", "MMMMMMMMXC,8090", "MMMMMMMMM,9000", "MMMMMMMMMX,9010",
         "MMMMMMMMMXX,9020", "MMMMMMMMMXXX,9030", "MMMMMMMMMXL,9040", "MMMMMMMMML,9050",
         "MMMMMMMMMLX,9060", "MMMMMMMMMLXX,9070", "MMMMMMMMMLXXX,9080", "MMMMMMMMMXC,9090"})
-    void convertFromString_assertEquals_Tens(String RN, int num) {
+    void convertFromString_CorrectNumericValue_Tens(String RN, int num) {
         assertEquals(num, convertFromString(RN));
     }
 
@@ -163,8 +157,8 @@ class RomanNumeralTest {
     @ParameterizedTest
     @CsvSource({"CDXXIII,423", "CCCLXXIX,379", "CCXXXIV,234", "CDXXV,425", "CMLVI,956", "CCXLI,241",
         "CCCXCVIII,398", "DCCLXVI,766", "XXXVIII,38", "CLXXXVII,187", "XCIII,93", "II,2",
-        "MMMMMMMMMXCIX,9099", "MMMMMMMMLXIII,8063", "MMMMMMMCDLVI,7456","MMLXXXII,2082"})
-    void convertFromString_assertEquals_CorrectNotationForRandInts(String RN, int num) {
+        "MMMMMMMMMXCIX,9099", "MMMMMMMMLXIII,8063", "MMMMMMMCDLVI,7456", "MMLXXXII,2082"})
+    void convertFromString_CorrectNumericValue_RandomInts(String RN, int num) {
         assertEquals(num, convertFromString(RN));
     }
 
@@ -172,4 +166,4 @@ class RomanNumeralTest {
     void convertFromString_ThrowIllegalArgumentException_EmptyString() {
         assertThrows(IllegalArgumentException.class, () -> convertFromString(""));
     }
-}// end RomanNumeralTest class
+}
