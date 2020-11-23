@@ -174,7 +174,6 @@ public class RomanNumeral {
         }
         // If the numeric value of the integer is 1000 or greater, set lowerBound to M.
         return VALUES_TO_LETTERS.get(NUMERICS[NUMERICS.length - 1]);
-
     }
 
     // The purpose of this helper method is to append the Roman Numeral symbol, saved into
