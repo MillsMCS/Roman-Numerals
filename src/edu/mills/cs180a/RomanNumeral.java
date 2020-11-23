@@ -100,7 +100,7 @@ public class RomanNumeral {
         // throw an error if any of the chars do not exist in the map
         for (int i = 0; i < letters.length; i++) {
             if (!LETTERS_TO_VALUES.containsKey(String.valueOf(letters[i]))) {
-                throw new IllegalArgumentException(letters[i] + "is not a valid roman numeral");
+                throw new IllegalArgumentException(letters[i] + " is not a valid roman numeral");
             }
         }
 
@@ -123,16 +123,11 @@ public class RomanNumeral {
             }
         }
         return numericValue;
-    }// end convertFromString
+    }
 
 
     /**
-     * Returns the Roman Numeral representation of any given number by first determining which keys
-     * in {@link #VALUES_TO_LETTERS} the number falls between and setting the lesser key as a
-     * {@link #lowerBound}. The number, {@link #lowerBound} and a StringBuilder are passed to a
-     * helper method, which will append the appropriate Roman symbol to the StringBuilder and return
-     * the number, of which the value has decreased based on the numeric value of the appended
-     * symbol.
+     * Returns the Roman Numeral representation of any given number.
      *
      * @param n the number to convert
      * @return the Roman Numeral representation
@@ -140,49 +135,54 @@ public class RomanNumeral {
      */
     @VisibleForTesting
     protected static String convertFromInt(int n) {
-        // lowerBound should be set to the Roman Numeral that closely matches the outermost place
+        // lowerBound should be set to the Roman Numeral that cosely matches the outermost place
         // value of any given number. Ex n = 56, lowerBound = L; n = 383, lowerBound = C
-        String lowerBound = "";
         StringBuilder romanNumeral = new StringBuilder();
 
         if (n > MAX_VALUE || n < MIN_VALUE) {
-            throw new IllegalArgumentException(n + "is out of bounds");
+            throw new IllegalArgumentException(n + " is out of bounds");
         }
 
         // once the value of n reaches 0, the Roman Numeral string is complete
         while (n > 0) {
-            for (int i = 0; i < NUMERICS.length; i++) {
-                // if the numeric value of the integer is 1000 or greater, which will cause the loop
-                // to reach the end of NUMERICS, set lowerBound to M.
-                if (i == (NUMERICS.length - 1) && NUMERICS[i] <= n) {
-                    lowerBound = VALUES_TO_LETTERS.get(NUMERICS[i]);
-                } else if (NUMERICS[i] <= n && n < NUMERICS[i + 1]) {
-                    lowerBound = VALUES_TO_LETTERS.get(NUMERICS[i]);
-                    // break out of the loop as soon as lowerBound is determined
-                    break;
-                }
-            }
+            // sets variable lowerBound to nearest lower Roman Numeral to be appended to end Roman
+            // Numeral
+            String lowerBound = findLowerBound(n);
 
-            appendNTimes(romanNumeral, n, lowerBound);
+            appendLowerBound(romanNumeral, n, lowerBound);
 
-            // Decrease the value of n by determining the remainder value of n divided by the
-            // numeric value of the symbol stored in lowerBound.
+            // Remove multiples of lowerBound from n.
             n = n % LETTERS_TO_VALUES.get(lowerBound);
         }
 
         return romanNumeral.toString();
 
-    }// end convertFromInt
+    }
 
-    // the purpose of this helper method is to append the Roman Numeral symbol to a StringBuilder.
-    // The number of times any symbol is appended to the String Builder depends on the quotient
-    // between n and the numeric value of symbol.
-    private static void appendNTimes(StringBuilder RN, int n, String symbol) {
+    // The purpose of this helperMethod is to determine which Roman Numeral should be saved into
+    // lowerBound in convertFromInt.
+    private static String findLowerBound(int n) {
+        for (int i = 0; i < NUMERICS.length; i++) {
+            // determine the placement of the numeric value between the most appropriate Roman
+            // Numerals
+            if (NUMERICS[i] <= n && n < NUMERICS[i + 1]) {
+                return VALUES_TO_LETTERS.get(NUMERICS[i]);
+            }
+        }
+        // If the numeric value of the integer is 1000 or greater, set lowerBound to M.
+        return VALUES_TO_LETTERS.get(NUMERICS[NUMERICS.length - 1]);
+
+    }
+
+    // The purpose of this helper method is to append the Roman Numeral symbol, saved into
+    // lowerBound to a StringBuilder. The number of times any symbol is appended to the String
+    // Builder depends on the quotient between the number n and the numeric value of the symbol.
+    private static void appendLowerBound(StringBuilder RN, int n, String symbol) {
         for (int i = 0; i < (n / LETTERS_TO_VALUES.get(symbol)); i++) {
             RN.append(symbol);
         }
-    }// end createNotation method
+    }
 
-}// end RomanNumeral class
+}
 
 
