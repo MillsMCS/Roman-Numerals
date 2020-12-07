@@ -165,10 +165,10 @@ public class RomanNumeral {
     // The purpose of this helperMethod is to determine which Roman Numeral should be saved into
     // lowerBound in convertFromInt.
     private static String findLowerBound(int n) {
-        for (int i = 0; i < NUMERICS.length-1; i++) {
-            // determine the placement of the numeric value between the most appropriate Roman
-            // Numerals
-            if (NUMERICS[i] <= n && n < NUMERICS[i+1]) {
+        for (int i = 0; i < NUMERICS.length - 1; i++) {
+            // Determine the placement of the numeric value between the most appropriate Roman
+            // Numerals.
+            if (NUMERICS[i] <= n && n < NUMERICS[i + 1]) {
                 return VALUES_TO_LETTERS.get(NUMERICS[i]);
             }
         }
@@ -179,9 +179,9 @@ public class RomanNumeral {
     // The purpose of this helper method is to append the Roman Numeral symbol, saved into
     // lowerBound to a StringBuilder. The number of times any symbol is appended to the String
     // Builder depends on the quotient between the number n and the numeric value of the symbol.
-    private static void appendLowerBound(StringBuilder RN, int n, String symbol) {
+    private static void appendLowerBound(StringBuilder rn, int n, String symbol) {
         for (int i = 0; i < (n / LETTERS_TO_VALUES.get(symbol)); i++) {
-            RN.append(symbol);
+            rn.append(symbol);
         }
     }
 
